@@ -1,22 +1,26 @@
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import { getPostBySlug, getPostSlugs, markdownToHtml, getAllPosts } from '@/lib/blog';
-import InvoiceCTA from '@/components/blog/InvoiceCTA';
-import AdSenseUnit from '@/components/ads/AdSenseUnit';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import AdSenseUnit from '@/components/ads/AdSenseUnit';
+import InvoiceCTA from '@/components/blog/InvoiceCTA';
+import { getAllPosts, getPostBySlug, getPostSlugs, markdownToHtml } from '@/lib/blog';
+import { routing } from '@/i18n/routing';
 
-type Props = { params: any };
-
-export async function generateStaticParams(props: { params: any }) {
-  const { locale } = await props.params;
-  const slugs = getPostSlugs(locale);
-  return slugs.map((file) => ({
-    slug: file.replace(/\.md$/, ''),
-  }));
+interface BlogPostPageProps {
+  params: Promise<{ locale: string; slug: string }>;
 }
 
-export async function generateMetadata(props: Props): Promise<Metadata> {
-  const { locale, slug } = await props.params;
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) =>
+    getPostSlugs(locale).map((file) => ({
+      locale,
+      slug: file.replace(/\.md$/, '')
+    }))
+  );
+}
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { locale, slug } = await params;
   const post = getPostBySlug(slug, locale);
 
   if (!post) {
@@ -31,13 +35,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       title: post.frontmatter.title,
       description: post.frontmatter.description,
       type: 'article',
-      publishedTime: post.frontmatter.date,
-    },
+      publishedTime: post.frontmatter.date
+    }
   };
 }
 
-export default async function BlogPostPage(props: Props) {
-  const { locale, slug } = await props.params;
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { locale, slug } = await params;
   const isAr = locale === 'ar';
   const post = getPostBySlug(slug, locale);
 
@@ -46,21 +50,25 @@ export default async function BlogPostPage(props: Props) {
   }
 
   const contentHtml = await markdownToHtml(post.content);
+  const relatedPosts = getAllPosts(locale)
+    .filter((candidate) => candidate.slug !== slug)
+    .slice(0, 3);
 
-  // Generate FAQ JSON-LD if faqs exist
-  const hasFaqs = post.frontmatter.faqs && post.frontmatter.faqs.length > 0;
-  const faqSchema = hasFaqs ? {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: post.frontmatter.faqs?.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer
+  const hasFaqs = Boolean(post.frontmatter.faqs?.length);
+  const faqSchema = hasFaqs
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: post.frontmatter.faqs?.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer
+          }
+        }))
       }
-    }))
-  } : null;
+    : null;
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -77,32 +85,20 @@ export default async function BlogPostPage(props: Props) {
 
   return (
     <div className={`min-h-screen bg-slate-50 py-16 ${isAr ? 'text-right' : 'text-left'}`} dir={isAr ? 'rtl' : 'ltr'}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      {hasFaqs && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
-      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      {hasFaqs && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+
       <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <header className="mb-12">
-          <time dateTime={post.frontmatter.date} className="block text-sm text-slate-500 mb-4">
+          <time dateTime={post.frontmatter.date} className="mb-4 block text-sm text-slate-500">
             {post.frontmatter.date}
           </time>
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl mb-6">
-            {post.frontmatter.title}
-          </h1>
-          <p className="text-xl text-slate-600 leading-8">
-            {post.frontmatter.description}
-          </p>
+          <h1 className="mb-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">{post.frontmatter.title}</h1>
+          <p className="text-xl leading-8 text-slate-600">{post.frontmatter.description}</p>
         </header>
 
-        <article 
-          className="prose prose-slate prose-lg max-w-none prose-h2:text-indigo-900 prose-h2:mt-12 prose-a:text-indigo-600"
+        <article
+          className="prose prose-lg prose-slate max-w-none prose-a:text-indigo-600 prose-h2:mt-12 prose-h2:text-indigo-900"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
 
@@ -110,22 +106,18 @@ export default async function BlogPostPage(props: Props) {
           <AdSenseUnit slot="1122334455" format="rectangle" style={{ minHeight: '250px' }} />
         </div>
 
-        {/* Related Articles SEO Silo */}
-        {getAllPosts(locale).filter(p => p.slug !== slug).length > 0 && (
-          <div className="mt-16 pt-10 border-t border-slate-200">
-            <h3 className="text-2xl font-bold text-slate-800 mb-6">Related Articles</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {getAllPosts(locale)
-                .filter(p => p.slug !== slug)
-                .slice(0, 3)
-                .map(related => (
-                  <Link href={`/${locale}/blog/${related.slug}`} key={related.slug} className="block group">
-                    <div className="bg-slate-50 border border-slate-100 p-6 rounded-xl hover:shadow-md transition">
-                      <h4 className="text-lg font-semibold text-indigo-600 mb-2 group-hover:underline">{related.frontmatter.title}</h4>
-                      <p className="text-slate-600 text-sm line-clamp-2">{related.frontmatter.description}</p>
-                    </div>
-                  </Link>
-                ))}
+        {relatedPosts.length > 0 && (
+          <div className="mt-16 border-t border-slate-200 pt-10">
+            <h3 className="mb-6 text-2xl font-bold text-slate-800">Related Articles</h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              {relatedPosts.map((related) => (
+                <Link href={`/${locale}/blog/${related.slug}`} key={related.slug} className="group block">
+                  <div className="rounded-xl border border-slate-100 bg-slate-50 p-6 transition hover:shadow-md">
+                    <h4 className="mb-2 text-lg font-semibold text-indigo-600 group-hover:underline">{related.frontmatter.title}</h4>
+                    <p className="line-clamp-2 text-sm text-slate-600">{related.frontmatter.description}</p>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         )}

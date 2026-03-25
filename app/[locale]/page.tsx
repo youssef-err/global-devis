@@ -1,134 +1,183 @@
-import Link from 'next/link';
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import InvoiceFormLazy from '@/components/InvoiceFormLazy';
+import Navbar from '@/components/Navbar';
 import AdSenseUnit from '@/components/ads/AdSenseUnit';
-import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
-export default function HomePage({ params }: { params: { locale: string } }) {
-  const t = useTranslations('HomePage');
-  const locale = params.locale || 'en';
-  
+interface HomePageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+
+  return {
+    title: t('heroTitle'),
+    description: t('heroDescription')
+  };
+}
+
+export default async function HomePage({ params }: HomePageProps) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+
   return (
-    <main className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Hero Section */}
-      <section className="bg-white py-12 px-4 shadow-sm text-center">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">{t('heroTitle')}</h1>
-          <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto">{t('heroDescription')}</p>
-        </div>
-      </section>
+    <main className="min-h-screen bg-slate-50/50 pb-16">
+      <Navbar />
 
-      {/* AdSense Top Slot */}
-      <div className="w-full max-w-5xl mx-auto px-4 mt-6">
-        <AdSenseUnit slot="1234567890" style={{ minHeight: '90px' }} />
-      </div>
-
-      {/* Main Tool */}
-      <section className="flex-grow py-8 px-4">
-        <div className="max-w-6xl mx-auto">
-          {/* Heavy client-side interactive tool explicitly deferred behind the lazy boundary */}
-          <div className="flex flex-col rounded-3xl bg-white shadow-2xl ring-1 ring-slate-200">
-            <InvoiceFormLazy />
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section className="bg-white py-16 px-4 border-t border-slate-200">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-6">{t('howItWorksTitle')}</h2>
-          <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">{t('howItWorksIntro')}</p>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-800 mb-3">{t('step1Title')}</h3>
-              <p className="text-slate-600">{t('step1Desc')}</p>
+      <section className="px-4 pb-8 pt-8 sm:px-6 lg:pb-12 lg:pt-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="glass-surface rounded-[40px] px-6 py-10 sm:px-8 lg:px-10 lg:py-12">
+            <div className="max-w-3xl">
+              <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
+                {t('heroTitle')}
+              </h1>
+              <p className="mt-4 text-base leading-8 text-slate-600 sm:text-lg">
+                {t('heroDescription')}
+              </p>
             </div>
-            <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-800 mb-3">{t('step2Title')}</h3>
-              <p className="text-slate-600">{t('step2Desc')}</p>
+
+            <div className="mt-8">
+              <AdSenseUnit slot="1234567890" style={{ minHeight: '90px' }} />
             </div>
-            <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-800 mb-3">{t('step3Title')}</h3>
-              <p className="text-slate-600">{t('step3Desc')}</p>
+
+            <div id="features" className="section-anchor mt-8">
+              <InvoiceFormLazy />
             </div>
           </div>
         </div>
       </section>
 
-      {/* AdSense Mid Slot */}
-      <div className="w-full max-w-5xl mx-auto px-4 mt-8 mb-4">
-        <AdSenseUnit slot="0987654321" format="fluid" style={{ minHeight: '120px' }} />
-      </div>
+      <section id="how-it-works" className="section-anchor px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 max-w-2xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+              {t('howItWorksTitle')}
+            </h2>
+            <p className="mt-3 text-slate-600">{t('howItWorksIntro')}</p>
+          </div>
 
-      {/* Benefits Section */}
-      <section className="bg-slate-50 py-16 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-6">{t('benefitsTitle')}</h2>
-          <div className="bg-white p-8 rounded-xl shadow-sm text-center">
-             <p className="text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed">{t('benefitsDesc')}</p>
+          <div className="grid gap-6 md:grid-cols-3">
+            {[1, 2, 3].map((step) => (
+              <div
+                key={step}
+                className="rounded-[28px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+              >
+                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-50 text-sm font-semibold text-indigo-700">
+                  0{step}
+                </div>
+                <h3 className="text-xl font-semibold text-slate-950">
+                  {t(`step${step}Title` as const)}
+                </h3>
+                <p className="mt-3 leading-7 text-slate-600">
+                  {t(`step${step}Desc` as const)}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="bg-white py-16 px-4 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-10">{t('faqTitle')}</h2>
-          
-          <div className="space-y-6">
-            <div className="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
-              <h4 className="text-lg font-bold text-slate-800 mb-2">{t('faq1Q')}</h4>
-              <p className="text-slate-600 leading-relaxed">{t('faq1A')}</p>
+      <section className="px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="rounded-[32px] border border-white/70 bg-white px-8 py-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+              {t('benefitsTitle')}
+            </h2>
+            <p className="mt-4 max-w-4xl text-base leading-8 text-slate-600">
+              {t('benefitsDesc')}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" className="section-anchor px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 max-w-2xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+              {t('pricingTitle')}
+            </h2>
+            <p className="mt-3 text-slate-600">{t('pricingIntro')}</p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-[30px] border border-white/70 bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+                {t('pricingStarterTitle')}
+              </p>
+              <p className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
+                {t('pricingStarterPrice')}
+              </p>
+              <p className="mt-4 text-slate-600">{t('pricingStarterDesc')}</p>
             </div>
-            <div className="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
-              <h4 className="text-lg font-bold text-slate-800 mb-2">{t('faq2Q')}</h4>
-              <p className="text-slate-600 leading-relaxed">{t('faq2A')}</p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
-              <h4 className="text-lg font-bold text-slate-800 mb-2">{t('faq3Q')}</h4>
-              <p className="text-slate-600 leading-relaxed">{t('faq3A')}</p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
-              <h4 className="text-lg font-bold text-slate-800 mb-2">{t('faq4Q')}</h4>
-              <p className="text-slate-600 leading-relaxed">{t('faq4A')}</p>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
-              <h4 className="text-lg font-bold text-slate-800 mb-2">{t('faq5Q')}</h4>
-              <p className="text-slate-600 leading-relaxed">{t('faq5A')}</p>
+            <div className="rounded-[30px] bg-[linear-gradient(145deg,_#0f172a,_#1e1b4b_50%,_#4f46e5)] p-8 text-white shadow-[0_24px_60px_rgba(15,23,42,0.2)]">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-200">
+                {t('pricingProTitle')}
+              </p>
+              <p className="mt-4 text-4xl font-semibold tracking-tight">
+                {t('pricingProPrice')}
+              </p>
+              <p className="mt-4 text-slate-200">{t('pricingProDesc')}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Recent Articles & Blog Link Section */}
-      <section className="bg-slate-50 py-16 px-4 border-t border-slate-200">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex justify-between items-end mb-10">
-            <h2 className="text-3xl font-bold text-slate-800">{t('recentArticlesTitle')}</h2>
-            <Link href={`/${locale}/blog`} className="text-indigo-600 font-semibold hover:underline">
-               {t('viewAllBlogPosts')} &rarr;
+      <section id="faq" className="section-anchor px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-10 text-3xl font-semibold tracking-tight text-slate-950">
+            {t('faqTitle')}
+          </h2>
+
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((faq) => (
+              <div
+                key={faq}
+                className="rounded-[24px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+              >
+                <h3 className="text-lg font-semibold text-slate-950">
+                  {t(`faq${faq}Q` as const)}
+                </h3>
+                <p className="mt-2 leading-7 text-slate-600">
+                  {t(`faq${faq}A` as const)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="blog" className="section-anchor px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 flex items-end justify-between gap-4">
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+              {t('recentArticlesTitle')}
+            </h2>
+            <Link href="/blog" locale={locale} className="font-semibold text-indigo-600 hover:text-indigo-700">
+              {t('viewAllBlogPosts')}
             </Link>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="group cursor-pointer bg-white p-6 rounded-xl shadow-sm">
-              <h4 className="text-xl font-semibold text-indigo-600 mb-3 group-hover:underline">
-                <Link href={`/${locale}/blog/how-to-make-invoice`}>{t('article1Title')}</Link>
-              </h4>
-              <p className="text-slate-600">{t('article1Excerpt')}</p>
-            </div>
-            <div className="group cursor-pointer bg-white p-6 rounded-xl shadow-sm">
-              <h4 className="text-xl font-semibold text-indigo-600 mb-3 group-hover:underline">
-                <Link href={`/${locale}/blog/how-to-make-invoice`}>{t('article2Title')}</Link>
-              </h4>
-              <p className="text-slate-600">{t('article2Excerpt')}</p>
-            </div>
-            <div className="group cursor-pointer bg-white p-6 rounded-xl shadow-sm">
-              <h4 className="text-xl font-semibold text-indigo-600 mb-3 group-hover:underline">
-                <Link href={`/${locale}/blog/how-to-make-invoice`}>{t('article3Title')}</Link>
-              </h4>
-              <p className="text-slate-600">{t('article3Excerpt')}</p>
-            </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              { slug: 'how-to-make-invoice', title: t('article1Title'), excerpt: t('article1Excerpt') },
+              { slug: 'best-invoicing-practices', title: t('article2Title'), excerpt: t('article2Excerpt') },
+              { slug: 'managing-cash-flow', title: t('article3Title'), excerpt: t('article3Excerpt') }
+            ].map((article) => (
+              <article
+                key={article.slug}
+                className="rounded-[28px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+              >
+                <h3 className="text-xl font-semibold text-slate-950">
+                  <Link href={`/blog/${article.slug}`} locale={locale} className="hover:text-indigo-600">
+                    {article.title}
+                  </Link>
+                </h3>
+                <p className="mt-3 leading-7 text-slate-600">{article.excerpt}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>

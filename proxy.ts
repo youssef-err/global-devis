@@ -1,9 +1,8 @@
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
- 
+
 export default createMiddleware(routing);
- 
+
 export const config = {
-  // كيطبق الـ middleware على كاع الروابط إلا الملفات الثابتة (static files)
-  matcher: ['/', '/(ar|en)/:path*']
+  matcher: ['/((?!api|auth|_next|_vercel|.*\\..*).*)']
 };

@@ -47,7 +47,7 @@ export default function ClassicTemplate({ data, totals, lang }: TemplateProps) {
   const colPrice = isAr ? styles.colPriceRTL : styles.colPrice;
   const colAmount = isAr ? styles.colAmountRTL : styles.colAmount;
 
-  const t = getTranslations(isAr, data.details.taxLabel);
+  const t = getTranslations(isAr, data.details.taxLabel ?? 'Tax');
 
   return (
     <Page size="A4" style={pageStyle}>

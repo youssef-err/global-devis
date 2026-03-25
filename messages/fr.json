@@ -59,6 +59,7 @@
     "rate": "Prix unitaire",
     "qty": "Qté",
     "amount": "Montant",
+    "downloadPdf": "Télécharger PDF",
     "addLineItem": "Ajouter un article",
     "pricing": "Tarification",
     "subtotal": "Sous-total",

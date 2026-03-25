@@ -1,3 +1,4 @@
+import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 import withPWAInit from '@ducanh2912/next-pwa';
 
@@ -5,14 +6,15 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const withPWA = withPWAInit({
   dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
-  // حذف skipWaiting لأنه قد لا يكون مدعوماً في هذه النسخة
+  disable: process.env.NODE_ENV !== 'production',
+  register: true
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // إزالة experimental turbo لتجنب تعارض النسخ
+  poweredByHeader: false,
+  compress: true,
+  productionBrowserSourceMaps: false
 };
 
 export default withPWA(withNextIntl(nextConfig));

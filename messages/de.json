@@ -59,6 +59,7 @@
     "rate": "Rate",
     "qty": "Qty",
     "amount": "Amount",
+    "downloadPdf": "Download PDF",
     "addLineItem": "Add Line Item",
     "pricing": "Pricing",
     "subtotal": "Subtotal",

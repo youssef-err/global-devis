@@ -24,7 +24,7 @@ function isOnline(): boolean {
 
 export function useInvoiceSync(params: {
   userId: string | null;
-  supabase: SupabaseClient;
+  supabase: SupabaseClient | null;
   data: InvoiceData;
   history: InvoiceHistoryRecord[];
   replaceState: (next: { data: InvoiceData; history: InvoiceHistoryRecord[] }) => void;
@@ -49,6 +49,10 @@ export function useInvoiceSync(params: {
 
   const persistSnapshot = useCallback(
     async (uid: string, draft: InvoiceData, hist: InvoiceHistoryRecord[]) => {
+      if (!supabase) {
+        return;
+      }
+
       const invoices = collectInvoicesToPersist(draft, hist);
       const now = new Date().toISOString();
       const rows = invoices.map((inv) => ({
@@ -66,7 +70,7 @@ export function useInvoiceSync(params: {
   );
 
   useEffect(() => {
-    if (!userId) {
+    if (!userId || !supabase) {
       syncReadyRef.current = false;
       lastPersistedRef.current = '';
       setSyncStatus('idle');
@@ -122,7 +126,7 @@ export function useInvoiceSync(params: {
   }, [userId, replaceState, persistSnapshot, dataRef, historyRef, supabase]);
 
   useEffect(() => {
-    if (!userId || !syncReadyRef.current) return;
+    if (!userId || !supabase || !syncReadyRef.current) return;
 
     const snapshot = JSON.stringify({ data, history });
     if (snapshot === lastPersistedRef.current) return;
@@ -164,7 +168,7 @@ export function useInvoiceSync(params: {
     }, DEBOUNCE_MS);
 
     return () => window.clearTimeout(t);
-  }, [data, history, userId, persistSnapshot, dataRef, historyRef]);
+  }, [data, history, userId, supabase, persistSnapshot, dataRef, historyRef]);
 
   useEffect(() => {
     const flush = async () => {
