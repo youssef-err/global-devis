@@ -3,15 +3,16 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
-  const requestUrl = new URL(request.url);
-  const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next') ?? '/en';
+  try {
+    const requestUrl = new URL(request.url);
+    const code = requestUrl.searchParams.get('code');
+    const next = requestUrl.searchParams.get('next') ?? '/en';
 
-  if (code) {
-    const cookieStore = await cookies();
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (url && key) {
+    if (code) {
+      const cookieStore = await cookies();
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      if (url && key) {
       const supabase = createServerClient(url, key, {
         cookies: {
           getAll() {
@@ -26,9 +27,13 @@ export async function GET(request: NextRequest) {
           }
         }
       });
-      await supabase.auth.exchangeCodeForSession(code);
+        await supabase.auth.exchangeCodeForSession(code);
+      }
     }
-  }
 
-  return NextResponse.redirect(new URL(next, request.url));
+    return NextResponse.redirect(new URL(next, requestUrl.origin));
+  } catch (error) {
+    console.error('Auth callback error:', error instanceof Error ? error.message : 'Unknown error');
+    return NextResponse.redirect(new URL('/en', request.url));
+  }
 }

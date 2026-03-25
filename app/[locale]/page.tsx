@@ -4,6 +4,9 @@ import InvoiceFormLazy from '@/components/InvoiceFormLazy';
 import Navbar from '@/components/Navbar';
 import { Link } from '@/i18n/routing';
 
+// Prevent pre-rendering during build to allow app to work without Supabase env vars
+export const dynamic = 'force-dynamic';
+
 interface HomePageProps {
   params: Promise<{ locale: string }>;
 }
