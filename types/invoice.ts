@@ -15,6 +15,7 @@ export interface CompanyInfo {
   email: string;
   phone?: string;
   taxId?: string;
+  ice?: string; // Moroccan ICE (Identifiant Commun de l'Entreprise)
   logo?: string;
 }
 
@@ -23,6 +24,7 @@ export interface ClientInfo {
   address: string;
   email: string;
   phone?: string;
+  ice?: string; // Moroccan ICE for clients
 }
 
 export interface InvoiceDetails {
@@ -34,10 +36,13 @@ export interface InvoiceDetails {
   taxRate: number;
   taxLabel?: string;
   subject: string;
+  purpose?: string; // Invoice purpose (Objectif de la facture)
   status: InvoiceStatus;
   template: InvoiceTemplate;
   notes?: string;
   terms?: string;
+  companyIce?: string; // Moroccan ICE for company
+  clientIce?: string; // Moroccan ICE for client
 }
 
 export interface InvoiceData {
@@ -45,6 +50,7 @@ export interface InvoiceData {
   recipient: ClientInfo;
   details: InvoiceDetails;
   items: InvoiceItem[];
+  signature?: string; // Base64 encoded signature image
 }
 
 export interface InvoiceTotals {

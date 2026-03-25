@@ -14,7 +14,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  productionBrowserSourceMaps: false
+  productionBrowserSourceMaps: false,
+  turbopack: {
+    root: __dirname
+  }
 };
 
 export default withPWA(withNextIntl(nextConfig));

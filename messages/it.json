@@ -110,5 +110,27 @@
     "unnamedClient": "Unnamed client",
     "duplicate": "Duplicate",
     "delete": "Delete"
+  },
+  "Invoice": {
+    "logo": "Logo Aziendale",
+    "upload_logo": "Carica Logo",
+    "purpose": "Scopo Fattura",
+    "notes": "Note",
+    "signature": "Firma",
+    "previewTitle": "Anteprima Fattura",
+    "print": "Stampa",
+    "share": "Condividi",
+    "edit": "Modifica",
+    "downloadPdf": "Scarica PDF",
+    "linkCopied": "Link copiato negli appunti!",
+    "totalTTC": "Totale TTC",
+    "subtotalHT": "Subtotale HT",
+    "tva": "IVA",
+    "reduction": "Sconto",
+    "fraisDePort": "Spese di spedizione",
+    "amountInWords": "La presente fattura termina a",
+    "totalAmount": "Importo totale",
+    "currencyDH": "DH",
+    "currencyDirham": "dirham"
   }
 }

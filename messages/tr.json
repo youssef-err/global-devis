@@ -110,5 +110,27 @@
     "unnamedClient": "Unnamed client",
     "duplicate": "Duplicate",
     "delete": "Delete"
+  },
+  "Invoice": {
+    "logo": "Şirket Logosu",
+    "upload_logo": "Logoyu Yükle",
+    "purpose": "Faturanın Amacı",
+    "notes": "Notlar",
+    "signature": "İmza",
+    "previewTitle": "Fatura Önizlemesi",
+    "print": "Yazdır",
+    "share": "Paylaş",
+    "edit": "Düzenle",
+    "downloadPdf": "PDF İndir",
+    "linkCopied": "Bağlantı panoya kopyalandı!",
+    "totalTTC": "Toplam TTC",
+    "subtotalHT": "Ara Toplam HT",
+    "tva": "KDV",
+    "reduction": "İndirim",
+    "fraisDePort": "Nakliye Ücreti",
+    "amountInWords": "İşbu fatura ... tutarında sona erer",
+    "totalAmount": "Toplam Tutar",
+    "currencyDH": "DH",
+    "currencyDirham": "dirhem"
   }
 }

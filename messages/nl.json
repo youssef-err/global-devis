@@ -110,5 +110,27 @@
     "unnamedClient": "Unnamed client",
     "duplicate": "Duplicate",
     "delete": "Delete"
+  },
+  "Invoice": {
+    "logo": "Bedrijfslogo",
+    "upload_logo": "Logo uploaden",
+    "purpose": "Doel Factuur",
+    "notes": "Notities",
+    "signature": "Handtekening",
+    "previewTitle": "Factuur Voorvertoning",
+    "print": "Afdrukken",
+    "share": "Delen",
+    "edit": "Bewerken",
+    "downloadPdf": "PDF Downloaden",
+    "linkCopied": "Link gekopieerd naar klembord!",
+    "totalTTC": "Totaal TTC",
+    "subtotalHT": "Subtotaal HT",
+    "tva": "BTW",
+    "reduction": "Korting",
+    "fraisDePort": "Verzendkosten",
+    "amountInWords": "De onderhavige factuur eindigt op",
+    "totalAmount": "Totaalbedrag",
+    "currencyDH": "DH",
+    "currencyDirham": "dirham"
   }
 }

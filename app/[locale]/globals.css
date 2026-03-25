@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Force sRGB color space for html2canvas compatibility */
+:root {
+  color-scheme: light;
+}
+
 @font-face {
   font-family: "AppArabic";
   src: url("/fonts/Tajawal-Regular.ttf") format("truetype");
@@ -236,7 +241,8 @@
 }
 
 @media print {
-  .no-print {
+  .no-print,
+  .hide-on-print {
     display: none !important;
   }
 
@@ -247,5 +253,67 @@
 
   @page {
     margin: 12mm;
+    size: A4;
+  }
+
+  /* Page Break Rules for Multi-page Support */
+  .page-break-avoid {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+    break-after: always;
+  }
+
+  #invoice-document {
+    page-break-after: always;
+    break-after: always;
+  }
+
+  /* Prevent text overlapping */
+  table {
+    page-break-inside: avoid;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  /* Ensure images print properly */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Fix for Arabic text direction in print */
+  [dir="rtl"] {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+
+  [dir="ltr"] {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+  }
+}
+
+/* Additional utilities for page break control */
+@layer utilities {
+  .page-break-avoid {
+    @apply break-inside-avoid;
+  }
+
+  .page-break-after {
+    @apply break-after-page;
+  }
+
+  .unicode-isolate {
+    unicode-bidi: isolate;
   }
 }

@@ -110,5 +110,27 @@
     "unnamedClient": "Unnamed client",
     "duplicate": "Duplicate",
     "delete": "Delete"
+  },
+  "Invoice": {
+    "logo": "Logotipo da Empresa",
+    "upload_logo": "Enviar Logotipo",
+    "purpose": "Objetivo da Fatura",
+    "notes": "Notas",
+    "signature": "Assinatura",
+    "previewTitle": "Pré-visualização da Fatura",
+    "print": "Imprimir",
+    "share": "Partilhar",
+    "edit": "Editar",
+    "downloadPdf": "Descarregar PDF",
+    "linkCopied": "Ligação copiada para a área de transferência!",
+    "totalTTC": "Total TTC",
+    "subtotalHT": "Subtotal HT",
+    "tva": "IVA",
+    "reduction": "Desconto",
+    "fraisDePort": "Portes",
+    "amountInWords": "A presente fatura termina em",
+    "totalAmount": "Montante total",
+    "currencyDH": "DH",
+    "currencyDirham": "dirhams"
   }
 }

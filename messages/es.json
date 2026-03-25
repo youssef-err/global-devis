@@ -33,5 +33,27 @@
     "pricingTitle": "Precios",
     "pricingIntro": "Elige el plan que mejor se adapte a tus necesidades",
     "pricingStarterTitle": "Plan Inicial"
+  },
+  "Invoice": {
+    "logo": "Logo de la Empresa",
+    "upload_logo": "Cargar Logo",
+    "purpose": "Propósito de la Factura",
+    "notes": "Notas",
+    "signature": "Firma",
+    "previewTitle": "Vista Previa de Factura",
+    "print": "Imprimir",
+    "share": "Compartir",
+    "edit": "Editar",
+    "downloadPdf": "Descargar PDF",
+    "linkCopied": "¡Enlace copiado al portapapeles!",
+    "totalTTC": "Total TTC",
+    "subtotalHT": "Subtotal HT",
+    "tva": "IVA",
+    "reduction": "Descuento",
+    "fraisDePort": "Gastos de envío",
+    "amountInWords": "La presente factura termina en",
+    "totalAmount": "Monto total",
+    "currencyDH": "DH",
+    "currencyDirham": "dírhams"
   }
 }

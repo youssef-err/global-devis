@@ -110,5 +110,27 @@
     "unnamedClient": "Unnamed client",
     "duplicate": "Duplicate",
     "delete": "Delete"
+  },
+  "Invoice": {
+    "logo": "Логотип компании",
+    "upload_logo": "Загрузить логотип",
+    "purpose": "Назначение счета",
+    "notes": "Примечания",
+    "signature": "Подпись",
+    "previewTitle": "Предварительный просмотр счета",
+    "print": "Печать",
+    "share": "Поделиться",
+    "edit": "Редактировать",
+    "downloadPdf": "Скачать PDF",
+    "linkCopied": "Ссылка скопирована в буфер обмена!",
+    "totalTTC": "Итого TTC",
+    "subtotalHT": "Промежуточный итог HT",
+    "tva": "НДС",
+    "reduction": "Скидка",
+    "fraisDePort": "Стоимость доставки",
+    "amountInWords": "Настоящий счет заканчивается на",
+    "totalAmount": "Общая сумма",
+    "currencyDH": "DH",
+    "currencyDirham": "дирхамов"
   }
 }

@@ -110,5 +110,27 @@
     "unnamedClient": "Unnamed client",
     "duplicate": "Duplicate",
     "delete": "Delete"
+  },
+  "Invoice": {
+    "logo": "Unternehmenslogo",
+    "upload_logo": "Logo hochladen",
+    "purpose": "Zweck der Rechnung",
+    "notes": "Notizen",
+    "signature": "Unterschrift",
+    "previewTitle": "Rechnungsvorschau",
+    "print": "Drucken",
+    "share": "Teilen",
+    "edit": "Bearbeiten",
+    "downloadPdf": "PDF herunterladen",
+    "linkCopied": "Link in die Zwischenablage kopiert!",
+    "totalTTC": "Gesamt TTC",
+    "subtotalHT": "Zwischensumme HT",
+    "tva": "MwSt.",
+    "reduction": "Rabatt",
+    "fraisDePort": "Versandkosten",
+    "amountInWords": "Die vorliegende Rechnung endet bei",
+    "totalAmount": "Gesamtbetrag",
+    "currencyDH": "DH",
+    "currencyDirham": "Dirham"
   }
 }

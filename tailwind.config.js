@@ -1,10 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  theme: {
-    // Disable lab() color interpolation to use sRGB instead (for Vercel build compatibility)
-    colorInterpolation: 'srgb',
+  theme: {},
+  corePlugins: {},
+  // Prevent Tailwind from generating lab() color functions for html2canvas compatibility
+  future: {
+    disableColorOpacityUtilityVariants: false,
   },
-  corePlugins: {
-    // Ensure no lab color support is generated
-  },
-};
+}
