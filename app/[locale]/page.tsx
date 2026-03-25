@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import InvoiceFormLazy from '@/components/InvoiceFormLazy';
 import Navbar from '@/components/Navbar';
-import AdSenseUnit from '@/components/ads/AdSenseUnit';
 import { Link } from '@/i18n/routing';
 
 interface HomePageProps {
@@ -27,26 +26,9 @@ export default async function HomePage({ params }: HomePageProps) {
     <main className="min-h-screen bg-slate-50/50 pb-16">
       <Navbar />
 
-      <section className="px-4 pb-8 pt-8 sm:px-6 lg:pb-12 lg:pt-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="glass-surface rounded-[40px] px-6 py-10 sm:px-8 lg:px-10 lg:py-12">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                {t('heroTitle')}
-              </h1>
-              <p className="mt-4 text-base leading-8 text-slate-600 sm:text-lg">
-                {t('heroDescription')}
-              </p>
-            </div>
-
-            <div className="mt-8">
-              <AdSenseUnit slot="1234567890" style={{ minHeight: '90px' }} />
-            </div>
-
-            <div id="features" className="section-anchor mt-8">
-              <InvoiceFormLazy />
-            </div>
-          </div>
+      <section className="px-4 pb-8 pt-6 sm:px-6 lg:pb-12 lg:pt-8">
+        <div className="mx-auto max-w-6xl">
+          <InvoiceFormLazy />
         </div>
       </section>
 
@@ -133,17 +115,20 @@ export default async function HomePage({ params }: HomePageProps) {
 
           <div className="space-y-4">
             {[1, 2, 3, 4, 5].map((faq) => (
-              <div
+              <details
                 key={faq}
-                className="rounded-[24px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+                className="group rounded-[24px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
               >
-                <h3 className="text-lg font-semibold text-slate-950">
-                  {t(`faq${faq}Q` as const)}
-                </h3>
-                <p className="mt-2 leading-7 text-slate-600">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold text-slate-950 marker:hidden">
+                  <span>{t(`faq${faq}Q` as const)}</span>
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-500 transition-colors group-open:bg-indigo-50 group-open:text-indigo-700">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-4 leading-7 text-slate-600">
                   {t(`faq${faq}A` as const)}
                 </p>
-              </div>
+              </details>
             ))}
           </div>
         </div>
