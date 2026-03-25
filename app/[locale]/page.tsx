@@ -6,6 +6,7 @@ import { Link } from '@/i18n/routing';
 
 // Prevent pre-rendering during build to allow app to work without Supabase env vars
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
