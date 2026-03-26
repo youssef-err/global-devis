@@ -628,7 +628,7 @@ export default function InvoiceForm() {
                       {details.taxRate > 0 ? (
                         <div className="flex items-center justify-between py-1.5 text-sm text-slate-700">
                           <span className="font-medium">
-                            {tInvoice('tvaLabel').replace('{rate}', details.taxRate.toString())}
+                            {tInvoice('tvaLabel', { rate: details.taxRate })}
                           </span>
                           <span className="tabular-nums">+{taxAmount.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
                         </div>
