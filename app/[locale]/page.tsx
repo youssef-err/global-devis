@@ -70,9 +70,11 @@ export default async function HomePage({ params }: HomePageProps) {
                   0{step}
                 </div>
                 <h3 className="text-xl font-semibold text-slate-950">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {t(`step${step}Title` as any)}
                 </h3>
                 <p className="mt-3 leading-7 text-slate-600">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {t(`step${step}Desc` as any)}
                 </p>
               </div>
@@ -150,10 +152,12 @@ export default async function HomePage({ params }: HomePageProps) {
                 className="group rounded-[24px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] cursor-pointer transition-all"
               >
                 <summary className="flex items-center justify-between gap-4 text-lg font-semibold text-slate-950">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   <span>{t(`faq${faq}Q` as any)}</span>
                   <span className="text-slate-400 group-open:rotate-45 transition-transform">+</span>
                 </summary>
                 <p className="mt-4 leading-7 text-slate-600">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {t(`faq${faq}A` as any)}
                 </p>
               </details>

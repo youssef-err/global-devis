@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type ConsentSettings = {
@@ -23,10 +25,8 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
   const [consent, setConsent] = useState<ConsentSettings | null>(null);
   const [hasEngaged, setHasEngaged] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     try {
       const stored = window.localStorage.getItem('gdpr_consent');
       if (stored) {

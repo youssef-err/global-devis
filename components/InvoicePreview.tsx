@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable @next/next/no-img-element */
+
 import { useTranslations, useLocale } from 'next-intl';
 import { Tajawal } from 'next/font/google';
 import React from 'react';

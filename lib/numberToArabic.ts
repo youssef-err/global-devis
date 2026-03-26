@@ -7,7 +7,7 @@ export function numberToArabicWords(amount: number): string {
   if (amount === 0) return "صفر درهم";
 
   let integerPart = Math.floor(amount);
-  let decimalPart = Math.round((amount - integerPart) * 100);
+  const decimalPart = Math.round((amount - integerPart) * 100);
 
   function parsePart(num: number): string {
     let partWords = "";

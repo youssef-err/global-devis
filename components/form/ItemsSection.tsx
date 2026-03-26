@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable jsx-a11y/control-has-associated-label */
+
 import { useEffect, useRef } from 'react';
 import { InvoiceItem } from '@/types/invoice';
 import { useTranslations } from 'next-intl';

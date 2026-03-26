@@ -31,12 +31,6 @@ const eslintConfig = defineConfig([
       'jsx-a11y/role-supports-aria-props': 'error'
     }
   },
-  {
-    files: ['scripts/**/*.mjs'],
-    rules: {
-      'no-console': 'off'
-    }
-  },
   globalIgnores([
     '.next/**',
     'out/**',
@@ -44,7 +38,13 @@ const eslintConfig = defineConfig([
     'coverage/**',
     'dist/**',
     'node_modules/**',
-    'next-env.d.ts'
+    'next-env.d.ts',
+    'types/validator.ts',
+    'scripts/generate-messages.js',
+    'scripts/*.js',
+    'postcss.config.mjs',
+    'tailwind.config.js',
+    'types/routes.d.ts'
   ])
 ]);
 

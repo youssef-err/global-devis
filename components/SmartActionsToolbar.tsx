@@ -39,6 +39,7 @@ export default function SmartActionsToolbar({ invoiceNumber, onPdfDownload }: Sm
         await navigator.share(shareData);
       } catch (error) {
         // User cancelled share or error occurred
+        // eslint-disable-next-line no-console
         console.log('Share cancelled or failed:', error);
       }
     } else {

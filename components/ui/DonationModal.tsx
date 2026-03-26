@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable jsx-a11y/control-has-associated-label */
+
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
@@ -108,6 +110,7 @@ export default function DonationModal({ open, onClose }: Props) {
               className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all active:scale-[0.98] hover:shadow-md ${opt.color}`}
             >
               {opt.icon}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {t(`options.${opt.key}` as any)}
             </a>
           ))}

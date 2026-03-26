@@ -3,7 +3,7 @@
  */
 
 export const storage = {
-  save: (key: string, data: any) => {
+  save: <T>(key: string, data: T) => {
     if (typeof window === "undefined") return;
     try {
       const serializedData = JSON.stringify({
@@ -20,7 +20,7 @@ export const storage = {
     }
   },
 
-  load: <T = any>(key: string): T | null => {
+  load: <T>(key: string): T | null => {
     if (typeof window === "undefined") return null;
     try {
       const item = window.localStorage.getItem(key);
@@ -29,7 +29,7 @@ export const storage = {
       const parsed = JSON.parse(item);
       // Support returning plain values if they weren't saved with our wrapper
       if (parsed && typeof parsed === 'object' && 'timestamp' in parsed && 'data' in parsed) {
-        return parsed.data as T;
+        return (parsed as { data: T }).data;
       }
       return parsed as T;
     } catch (error) {
@@ -61,7 +61,7 @@ export const storage = {
       
       const parsed = JSON.parse(item);
       if (parsed && typeof parsed === 'object' && 'timestamp' in parsed) {
-        return Date.now() - parsed.timestamp;
+        return Date.now() - (parsed as { timestamp: number }).timestamp;
       }
       // If it wasn't saved with our wrapper, we don't know the age
       return null;
