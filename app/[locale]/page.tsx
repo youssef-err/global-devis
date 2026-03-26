@@ -38,10 +38,18 @@ export default async function HomePage({ params }: HomePageProps) {
         </div>
       </section>
 
-      {/* Ad Section */}
+      {/* Ad Section - After Form */}
       <section className="px-4 sm:px-6">
-        <div className="mx-auto max-w-6xl">
-          <AdSenseUnit slot="3344556677" format="auto" style={{ minHeight: '110px' }} />
+        <div className="mx-auto max-w-4xl">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-slate-50 px-4 text-xs text-slate-500 font-medium">Continue below</span>
+            </div>
+          </div>
+          <AdSenseUnit slot="3344556677" format="auto" style={{ minHeight: '110px' }} labelText="Tools for freelancers" />
         </div>
       </section>
 
@@ -94,10 +102,10 @@ export default async function HomePage({ params }: HomePageProps) {
         </div>
       </section>
 
-      {/* Ad Section */}
+      {/* Ad Section - After Benefits */}
       <section className="px-4 sm:px-6">
-        <div className="mx-auto max-w-6xl">
-          <AdSenseUnit slot="8899001122" format="auto" style={{ minHeight: '110px' }} />
+        <div className="mx-auto max-w-4xl">
+          <AdSenseUnit slot="8899001122" format="auto" style={{ minHeight: '110px' }} labelText="Popular this week" />
         </div>
       </section>
 

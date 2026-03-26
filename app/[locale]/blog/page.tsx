@@ -22,7 +22,7 @@ export default async function BlogIndexPage({ params }: BlogIndexPageProps) {
               : 'Tips and guides to help you invoice better and grow your freelance business.'}
           </p>
           <div className="mt-8">
-            <AdSenseUnit slot="2200112233" format="auto" style={{ minHeight: '110px' }} className="rounded-xl border border-slate-200 bg-white" />
+            <AdSenseUnit slot="2200112233" format="auto" style={{ minHeight: '110px' }} labelText="Popular articles" />
           </div>
           <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20">
             {posts.map((post) => (

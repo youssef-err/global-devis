@@ -104,8 +104,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <p className="text-xl leading-8 text-slate-600">{post.frontmatter.description}</p>
         </header>
 
-        <div className="mb-12">
-          <AdSenseUnit slot="5566778899" format="auto" style={{ minHeight: '110px' }} />
+        <div className="my-10">
+          <AdSenseUnit slot="5566778899" format="auto" style={{ minHeight: '110px' }} labelText="Related reading" />
         </div>
 
         <article className="prose prose-lg prose-slate max-w-none prose-a:text-indigo-600 prose-h2:mt-12 prose-h2:text-indigo-900">
@@ -126,13 +126,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   />
                 )}
                 {shouldShowAd && (
-                  <div className="mt-6 mb-6">
-                    <AdSenseUnit slot="6677889900" format="auto" style={{ minHeight: '110px' }} />
+                  <div className="my-10">
+                    <AdSenseUnit slot="6677889900" format="auto" style={{ minHeight: '110px' }} labelText="Recommended tools" />
                   </div>
                 )}
                 {isLastSection && !hasFaqs && (
-                  <div className="mt-6 mb-6">
-                    <AdSenseUnit slot="6677889900" format="auto" style={{ minHeight: '110px' }} />
+                  <div className="my-10">
+                    <AdSenseUnit slot="6677889900" format="auto" style={{ minHeight: '110px' }} labelText="More resources" />
                   </div>
                 )}
               </div>
@@ -140,8 +140,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           })}
         </article>
 
-        <div className="my-12 w-full">
-          <AdSenseUnit slot="1122334455" format="rectangle" style={{ minHeight: '250px' }} />
+        <div className="my-10">
+          <AdSenseUnit slot="1122334455" format="rectangle" style={{ minHeight: '250px' }} labelText="Featured solution" />
         </div>
 
         <div className={`mt-12 p-6 bg-indigo-50 rounded-xl border border-indigo-100 ${isAr ? 'text-right' : 'text-left'}`}>
