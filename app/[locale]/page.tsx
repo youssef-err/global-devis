@@ -6,9 +6,6 @@ import { Link } from '@/i18n/routing';
 import SiteFooter from '@/components/layout/SiteFooter';
 import AdSenseUnit from '@/components/ads/AdSenseUnit';
 
-/** * إعدادات Next.js لضمان عمل الصفحة بشكل ديناميكي 
- * وتفادي مشاكل الـ Build في حالة غياب متغيرات البيئة (Supabase/Env)
- */
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
@@ -16,9 +13,6 @@ interface HomePageProps {
   params: Promise<{ locale: string }>;
 }
 
-/**
- * توليد الـ Metadata (العنوان والوصف) أوتوماتيكياً حسب اللغة
- */
 export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'HomePage' });
@@ -34,46 +28,49 @@ export default async function HomePage({ params }: HomePageProps) {
   const t = await getTranslations({ locale, namespace: 'HomePage' });
 
   return (
-    <main className="min-h-screen bg-slate-50/50 pb-16">
-      {/* شريط التنقل العلوي */}
+    <main className="min-h-screen">
       <Navbar />
 
-      {/* منطقة العمل الرئيسية (الفورم والبريفيو) */}
-      <section className="px-4 pb-8 pt-6 sm:px-6 lg:pb-12 lg:pt-8">
+      {/* Main Invoice Form Section */}
+      <section className="px-4 pb-10 pt-6 sm:px-6 lg:pb-16 lg:pt-10">
         <div className="mx-auto max-w-6xl">
           <InvoiceFormLazy />
         </div>
       </section>
+
+      {/* Ad Section */}
       <section className="px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <AdSenseUnit slot="3344556677" format="auto" style={{ minHeight: '110px' }} className="rounded-xl border border-slate-200 bg-white" />
+          <AdSenseUnit slot="3344556677" format="auto" style={{ minHeight: '110px' }} />
         </div>
       </section>
 
-      {/* قسم: كيف يعمل التطبيق */}
-      <section id="how-it-works" className="section-anchor px-4 py-16 sm:px-6">
+      {/* How It Works Section */}
+      <section id="how-it-works" className="section-anchor px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10 max-w-2xl">
-            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+          <div className="mb-12 max-w-2xl">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               {t('howItWorksTitle')}
             </h2>
-            <p className="mt-3 text-slate-600">{t('howItWorksIntro')}</p>
+            <p className="mt-4 text-base text-slate-600">
+              {t('howItWorksIntro')}
+            </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {[1, 2, 3].map((step) => (
               <div
                 key={step}
-                className="rounded-[28px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-md transition-shadow"
+                className="app-card group"
               >
-                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-50 text-sm font-semibold text-indigo-700">
-                  0{step}
+                <div className="feature-icon mb-6">
+                  <span className="text-lg font-bold text-indigo-600">0{step}</span>
                 </div>
-                <h3 className="text-xl font-semibold text-slate-950">
+                <h3 className="text-xl font-semibold text-slate-900">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {t(`step${step}Title` as any)}
                 </h3>
-                <p className="mt-3 leading-7 text-slate-600">
+                <p className="mt-3 leading-relaxed text-slate-600">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {t(`step${step}Desc` as any)}
                 </p>
@@ -83,65 +80,82 @@ export default async function HomePage({ params }: HomePageProps) {
         </div>
       </section>
 
-      {/* قسم المميزات والخصوصية */}
+      {/* Benefits Banner */}
       <section className="px-4 py-16 sm:px-6">
         <div className="mx-auto max-w-5xl">
-          <div className="rounded-[32px] border border-white/70 bg-white px-8 py-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center">
-            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+          <div className="app-card text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               {t('benefitsTitle')}
             </h2>
-            <p className="mt-4 max-w-4xl mx-auto text-base leading-8 text-slate-600">
+            <p className="mt-5 max-w-3xl mx-auto text-base leading-relaxed text-slate-600">
               {t('benefitsDesc')}
             </p>
           </div>
         </div>
       </section>
 
+      {/* Ad Section */}
       <section className="px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <AdSenseUnit slot="8899001122" format="auto" style={{ minHeight: '110px' }} className="rounded-xl border border-slate-200 bg-white" />
+          <AdSenseUnit slot="8899001122" format="auto" style={{ minHeight: '110px' }} />
         </div>
       </section>
 
-      {/* قسم الأسعار والخطط */}
-      <section id="pricing" className="section-anchor px-4 py-16 sm:px-6">
+      {/* Pricing Section */}
+      <section id="pricing" className="section-anchor px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10 max-w-2xl">
-            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+          <div className="mb-12 max-w-2xl">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               {t('pricingTitle')}
             </h2>
-            <p className="mt-3 text-slate-600">{t('pricingIntro')}</p>
+            <p className="mt-4 text-base text-slate-600">
+              {t('pricingIntro')}
+            </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* خطة المبتدئين */}
-            <div className="rounded-[30px] border border-white/70 bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <div className="grid gap-8 md:grid-cols-2">
+            {/* Starter Plan */}
+            <div className="app-card">
+              <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
                 {t('pricingStarterTitle')}
               </p>
-              <p className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
+              <p className="mt-6 text-5xl font-bold tracking-tight text-slate-900">
                 {t('pricingStarterPrice')}
               </p>
-              <p className="mt-4 text-slate-600">{t('pricingStarterDesc')}</p>
+              <p className="mt-4 text-slate-600">
+                {t('pricingStarterDesc')}
+              </p>
+              <Link href={`/${locale}`} className="mt-8 app-btn app-btn-secondary w-full">
+                Get Started
+              </Link>
             </div>
-            {/* خطة المحترفين */}
-            <div className="rounded-[30px] bg-slate-900 p-8 text-white shadow-xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-300">
+
+            {/* Pro Plan */}
+            <div className="relative app-card bg-slate-900 border-slate-700">
+              <div className="absolute -top-3 right-6 px-3 py-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-xs font-semibold text-white rounded-full">
+                Popular
+              </div>
+              <p className="text-sm font-semibold uppercase tracking-widest text-indigo-400">
                 {t('pricingProTitle')}
               </p>
-              <p className="mt-4 text-4xl font-semibold tracking-tight">
+              <p className="mt-6 text-5xl font-bold tracking-tight text-white">
                 {t('pricingProPrice')}
               </p>
-              <p className="mt-4 text-slate-300">{t('pricingProDesc')}</p>
+              <p className="mt-4 text-slate-400">
+                {t('pricingProDesc')}
+              </p>
+              <Link href={`/${locale}`} className="mt-8 app-btn app-btn-primary w-full">
+                Get Started
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* قسم الأسئلة الشائعة FAQ */}
-      <section id="faq" className="section-anchor px-4 py-16 sm:px-6">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="mb-10 text-3xl font-semibold tracking-tight text-slate-950">
+      {/* FAQ Section */}
+      <section id="faq" className="section-anchor px-4 py-20 sm:px-6">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-12 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             {t('faqTitle')}
           </h2>
 
@@ -149,14 +163,17 @@ export default async function HomePage({ params }: HomePageProps) {
             {[1, 2, 3, 4, 5].map((faq) => (
               <details
                 key={faq}
-                className="group rounded-[24px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] cursor-pointer transition-all"
+                className="app-card group cursor-pointer"
               >
-                <summary className="flex items-center justify-between gap-4 text-lg font-semibold text-slate-950">
+                <summary className="flex items-center justify-between gap-4 text-lg font-semibold text-slate-900 list-none">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   <span>{t(`faq${faq}Q` as any)}</span>
-                  <span className="text-slate-400 group-open:rotate-45 transition-transform">+</span>
+                  <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 group-open:bg-indigo-100 group-open:text-indigo-600 transition-colors">
+                    <span className="group-open:hidden">+</span>
+                    <span className="hidden group-open:block">−</span>
+                  </span>
                 </summary>
-                <p className="mt-4 leading-7 text-slate-600">
+                <p className="mt-4 leading-relaxed text-slate-600">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {t(`faq${faq}A` as any)}
                 </p>
@@ -166,19 +183,24 @@ export default async function HomePage({ params }: HomePageProps) {
         </div>
       </section>
 
-      {/* قسم المدونة */}
-      <section id="blog" className="section-anchor px-4 py-16 sm:px-6">
+      {/* Blog Section */}
+      <section id="blog" className="section-anchor px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex items-end justify-between gap-4">
-            <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
-              {t('recentArticlesTitle')}
-            </h2>
-            <Link href="/blog" locale={locale} className="font-semibold text-indigo-600 hover:text-indigo-700">
+          <div className="mb-12 flex items-end justify-between gap-6">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                {t('recentArticlesTitle')}
+              </h2>
+            </div>
+            <Link href="/blog" locale={locale} className="hidden sm:inline-flex items-center gap-2 font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">
               {t('viewAllBlogPosts')}
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </Link>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {[
               { slug: 'how-to-make-invoice', title: t('article1Title'), excerpt: t('article1Excerpt') },
               { slug: 'best-invoicing-practices', title: t('article2Title'), excerpt: t('article2Excerpt') },
@@ -186,16 +208,30 @@ export default async function HomePage({ params }: HomePageProps) {
             ].map((article) => (
               <article
                 key={article.slug}
-                className="rounded-[28px] border border-white/70 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+                className="app-card group cursor-pointer"
               >
-                <h3 className="text-xl font-semibold text-slate-950">
-                  <Link href={`/blog/${article.slug}`} locale={locale} className="hover:text-indigo-600 transition-colors">
+                <h3 className="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                  <Link href={`/blog/${article.slug}`} locale={locale}>
                     {article.title}
                   </Link>
                 </h3>
-                <p className="mt-3 leading-7 text-slate-600 line-clamp-2">{article.excerpt}</p>
+                <p className="mt-3 leading-relaxed text-slate-600 line-clamp-2">
+                  {article.excerpt}
+                </p>
+                <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
+                  <span>Read more</span>
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
               </article>
             ))}
+          </div>
+
+          <div className="mt-8 text-center sm:hidden">
+            <Link href="/blog" locale={locale} className="app-btn app-btn-secondary">
+              {t('viewAllBlogPosts')}
+            </Link>
           </div>
         </div>
       </section>
