@@ -288,7 +288,12 @@
     "signatureClickUpload": "Click to upload",
     "signatureOrDrag": "or drag your image",
     "signaturePreview": "Preview:",
-    "signatureRemove": "Remove signature"
+    "signatureRemove": "Remove signature",
+    "companyInfoHelper": "Fill your company info",
+    "clientInfoHelper": "Add your client",
+    "step1": "Your company",
+    "step2": "Your client",
+    "step3": "Preview & export"
   },
   "Legal": {
     "terms": {

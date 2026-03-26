@@ -248,7 +248,12 @@
     "signatureClickUpload": "Cliquez pour importer",
     "signatureOrDrag": "ou glissez votre image",
     "signaturePreview": "Aperçu:",
-    "signatureRemove": "Supprimer la signature"
+    "signatureRemove": "Supprimer la signature",
+    "companyInfoHelper": "Remplissez vos informations",
+    "clientInfoHelper": "Ajoutez votre client",
+    "step1": "Votre entreprise",
+    "step2": "Votre client",
+    "step3": "Aperçu et export"
   },
   "Legal": {
     "terms": {

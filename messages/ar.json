@@ -288,7 +288,12 @@
     "signatureClickUpload": "انقر للرفع",
     "signatureOrDrag": "أو اسحب صورتك",
     "signaturePreview": "معاينة:",
-    "signatureRemove": "إزالة التوقيع"
+    "signatureRemove": "إزالة التوقيع",
+    "companyInfoHelper": "أدخل معلومات شركتك",
+    "clientInfoHelper": "أضف بيانات العميل",
+    "step1": "شركتك",
+    "step2": "العميل",
+    "step3": "المعاينة والتصدير"
   },
   "Legal": {
     "terms": {

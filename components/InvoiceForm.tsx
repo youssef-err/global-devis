@@ -111,14 +111,17 @@ function calculateInvoiceTotals(items: InvoiceItem[], taxRate: number, discount:
 }
 
 // --- Sub-components (Formatting Toolkit) ---
-function FormSection({ title, icon, children }: { title: string; icon: ReactNode; children: ReactNode }) {
+function FormSection({ title, icon, children, helper, isHighlighted }: { title: string; icon: ReactNode; children: ReactNode; helper?: string; isHighlighted?: boolean }) {
   return (
-    <section className="app-card">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-50 text-slate-900 ring-1 ring-slate-200">
+    <section className={`app-card transition-all duration-500 ${isHighlighted ? 'ring-2 ring-indigo-500 ring-offset-2 shadow-lg shadow-indigo-500/10' : ''}`}>
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-white shadow-sm">
           {icon}
         </div>
-        <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+          {helper && <p className="text-xs text-slate-500 mt-0.5">{helper}</p>}
+        </div>
       </div>
       <div className="space-y-5">{children}</div>
     </section>
@@ -154,13 +157,31 @@ export default function InvoiceForm() {
   });
 
   const [items, setItems] = useState<InvoiceItem[]>([{ id: '1', description: '', quantity: 1, price: 0 }]);
-  const [themeColor, setThemeColor] = useState('#3b82f6'); // Default blue color
+  const [themeColor, setThemeColor] = useState('#3b82f6');
   const [signature, setSignature] = useState<string>('');
   const [signatureMode, setSignatureMode] = useState<'canvas' | 'upload'>('canvas');
+  const [currentStep, setCurrentStep] = useState(0);
 
   const sigCanvasRef = useRef<SignatureCanvas>(null);
+  const firstInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+    setTimeout(() => {
+      firstInputRef.current?.focus();
+    }, 300);
+  }, []);
+
+  const steps = [
+    { id: 0, label: t('step1') },
+    { id: 1, label: t('step2') },
+    { id: 2, label: t('step3') },
+  ];
+
+  useEffect(() => {
+    if (details.companyName) setCurrentStep(1);
+    if (details.clientName) setCurrentStep(2);
+  }, [details.companyName, details.clientName]);
 
   // --- Calculations ---
   const { subtotal, taxAmount, totalTTC } = useMemo(() =>
@@ -231,6 +252,28 @@ export default function InvoiceForm() {
             <div className="sticky top-0 z-10 -mx-6 mb-6 border-b border-slate-200 bg-white/85 px-6 py-4 backdrop-blur-md">
               <h1 className="text-2xl font-semibold text-slate-900">{t('workspaceTitle')}</h1>
               <p className="mt-1 text-sm text-slate-500">{t('workspaceDescription')}</p>
+              
+              {/* Step Progress */}
+              <div className="mt-4 flex items-center gap-2">
+                {steps.map((step, index) => (
+                  <div key={step.id} className="flex items-center gap-2">
+                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                      currentStep >= step.id 
+                        ? 'bg-indigo-600 text-white' 
+                        : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
+                        {index + 1}
+                      </span>
+                      <span>{step.label}</span>
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div className={`w-8 h-0.5 ${currentStep > step.id ? 'bg-indigo-600' : 'bg-slate-200'}`} />
+                    )}
+                  </div>
+                ))}
+              </div>
+              
               <p className="mt-3 text-sm text-slate-700">{t('credibilityLine')}</p>
               <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
                 {t('trustMessage')}
@@ -238,7 +281,12 @@ export default function InvoiceForm() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormSection title={t('companyInfo')} icon={<Building2 size={20}/>}>
+              <FormSection 
+                title={t('companyInfo')} 
+                icon={<Building2 size={20}/>}
+                helper={t('companyInfoHelper')}
+                isHighlighted={currentStep === 0}
+              >
                 <Field label={tInvoice('upload_logo')}>
                   <input type="file" accept="image/*" onChange={(e) => {
                     const file = e.target.files?.[0];
@@ -251,17 +299,30 @@ export default function InvoiceForm() {
                     }
                   }} className={`${inputClass} file:me-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-black/90`}/>
                 </Field>
-                <Field label={t('yourCompanyName')}><input className={inputClass} value={details.companyName} onChange={e => updateDetails('companyName', e.target.value)}/></Field>
-                <Field label={t('email')}><input className={inputClass} value={details.companyEmail} onChange={e => updateDetails('companyEmail', e.target.value)}/></Field>
+                <Field label={t('yourCompanyName')}>
+                  <input 
+                    ref={firstInputRef}
+                    className={inputClass} 
+                    value={details.companyName} 
+                    onChange={e => updateDetails('companyName', e.target.value)}
+                    placeholder={t('companyPlaceholder')}
+                  />
+                </Field>
+                <Field label={t('email')}><input className={inputClass} value={details.companyEmail} onChange={e => updateDetails('companyEmail', e.target.value)} placeholder={t('companyEmailPlaceholder')}/></Field>
                 <Field label={t('ice')}><input className={inputClass} value={details.companyIce || ''} onChange={e => updateDetails('companyIce', e.target.value)} maxLength={15} placeholder={t('icePlaceholder')}/></Field>
-                <Field label={t('companyAddress')}><textarea className={`${inputClass} h-20`} value={details.companyAddress} onChange={e => updateDetails('companyAddress', e.target.value)}/></Field>
+                <Field label={t('companyAddress')}><textarea className={`${inputClass} h-20`} value={details.companyAddress} onChange={e => updateDetails('companyAddress', e.target.value)} placeholder={t('companyAddressPlaceholder')}/></Field>
               </FormSection>
 
-              <FormSection title={t('clientInfo')} icon={<User size={20}/>}>
-                <Field label={t('clientName')}><input className={inputClass} value={details.clientName} onChange={e => updateDetails('clientName', e.target.value)}/></Field>
-                <Field label={t('email')}><input className={inputClass} value={details.clientEmail} onChange={e => updateDetails('clientEmail', e.target.value)}/></Field>
+              <FormSection 
+                title={t('clientInfo')} 
+                icon={<User size={20}/>}
+                helper={t('clientInfoHelper')}
+                isHighlighted={currentStep === 1}
+              >
+                <Field label={t('clientName')}><input className={inputClass} value={details.clientName} onChange={e => updateDetails('clientName', e.target.value)} placeholder={t('clientPlaceholder')}/></Field>
+                <Field label={t('email')}><input className={inputClass} value={details.clientEmail} onChange={e => updateDetails('clientEmail', e.target.value)} placeholder={t('clientEmailPlaceholder')}/></Field>
                 <Field label={t('iceClient')}><input className={inputClass} value={details.clientIce || ''} onChange={e => updateDetails('clientIce', e.target.value)} maxLength={15} placeholder={t('iceClientPlaceholder')}/></Field>
-                <Field label={t('clientAddress')}><textarea className={`${inputClass} h-20`} value={details.clientAddress} onChange={e => updateDetails('clientAddress', e.target.value)}/></Field>
+                <Field label={t('clientAddress')}><textarea className={`${inputClass} h-20`} value={details.clientAddress} onChange={e => updateDetails('clientAddress', e.target.value)} placeholder={t('clientAddressPlaceholder')}/></Field>
               </FormSection>
             </div>
 
