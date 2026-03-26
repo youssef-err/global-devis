@@ -3,6 +3,8 @@ import { getTranslations } from 'next-intl/server';
 import InvoiceFormLazy from '@/components/InvoiceFormLazy';
 import Navbar from '@/components/Navbar';
 import { Link } from '@/i18n/routing';
+import SiteFooter from '@/components/layout/SiteFooter';
+import AdSenseUnit from '@/components/ads/AdSenseUnit';
 
 /** * إعدادات Next.js لضمان عمل الصفحة بشكل ديناميكي 
  * وتفادي مشاكل الـ Build في حالة غياب متغيرات البيئة (Supabase/Env)
@@ -40,6 +42,11 @@ export default async function HomePage({ params }: HomePageProps) {
       <section className="px-4 pb-8 pt-6 sm:px-6 lg:pb-12 lg:pt-8">
         <div className="mx-auto max-w-6xl">
           <InvoiceFormLazy />
+        </div>
+      </section>
+      <section className="px-4 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <AdSenseUnit slot="3344556677" format="auto" style={{ minHeight: '110px' }} className="rounded-xl border border-slate-200 bg-white" />
         </div>
       </section>
 
@@ -85,6 +92,12 @@ export default async function HomePage({ params }: HomePageProps) {
               {t('benefitsDesc')}
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="px-4 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <AdSenseUnit slot="8899001122" format="auto" style={{ minHeight: '110px' }} className="rounded-xl border border-slate-200 bg-white" />
         </div>
       </section>
 
@@ -182,6 +195,8 @@ export default async function HomePage({ params }: HomePageProps) {
           </div>
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

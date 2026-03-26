@@ -152,15 +152,33 @@ export async function markdownToHtml(markdown: string) {
       if (block.startsWith('- ')) {
         const items = block
           .split(/\r?\n/)
-          .map((line) => line.replace(/^- /, '').trim())
+          .map((line) => line.replace(/^-\s*/, '').trim())
           .filter(Boolean)
           .map((item) => `<li>${markdownInlineToHtml(item)}</li>`)
           .join('');
 
-        return `<ul>${items}</ul>`;
+        return `<ul class="space-y-1">${items}</ul>`;
       }
 
-      return `<p>${markdownInlineToHtml(block.replace(/\r?\n/g, '<br />'))}</p>`;
+      if (block.startsWith('1. ') || /^\d+\.\s/.test(block)) {
+        const items = block
+          .split(/\r?\n/)
+          .map((line) => line.replace(/^\d+\.\s*/, '').trim())
+          .filter(Boolean)
+          .map((item) => `<li>${markdownInlineToHtml(item)}</li>`)
+          .join('');
+
+        return `<ol class="space-y-1 list-decimal list-inside">${items}</ol>`;
+      }
+
+      const singleLines = block.split(/\r?\n/).filter(l => l.trim());
+      if (singleLines.length > 1 && !block.includes('.')) {
+        return singleLines
+          .map((line) => `<p class="mb-3">${markdownInlineToHtml(line.trim())}</p>`)
+          .join('');
+      }
+
+      return `<p class="mb-4 leading-relaxed">${markdownInlineToHtml(block.replace(/\r?\n/g, ' '))}</p>`;
     })
     .join('\n');
 

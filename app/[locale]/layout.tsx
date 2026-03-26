@@ -32,6 +32,8 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://globaldevis.app';
+
 export async function generateMetadata({
   params
 }: {
@@ -45,9 +47,24 @@ export async function generateMetadata({
 
   const t = await getTranslations({ locale, namespace: 'HomePage' });
 
+  const alternates = {
+    languages: Object.fromEntries(
+      routing.locales.map((l) => [l, `${BASE_URL}/${l}`])
+    ) as Record<string, string>,
+  };
+
   return {
     title: t('heroTitle'),
-    description: t('heroDescription')
+    description: t('heroDescription'),
+    alternates,
+    icons: {
+      icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }]
+    },
+    openGraph: {
+      siteName: 'Global Devis',
+      type: 'website',
+      locale: locale,
+    }
   };
 }
 

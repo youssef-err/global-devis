@@ -5,8 +5,9 @@ import { ChevronDown, Globe, Menu, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
+import { routing } from '@/i18n/routing';
 
-const supportedLocales = ['en', 'ar', 'fr'] as const;
+const supportedLocales = routing.locales;
 
 export default function Navbar() {
   const t = useTranslations('Nav');
@@ -27,7 +28,7 @@ export default function Navbar() {
     [t]
   );
 
-  const switchLocale = (nextLocale: (typeof supportedLocales)[number]) => {
+  const switchLocale = (nextLocale: string) => {
     router.replace(
       {
         pathname,
@@ -48,7 +49,7 @@ export default function Navbar() {
             GD
           </div>
           <div className="font-arabic">
-            <p className="text-sm font-bold text-slate-950">Global Devis</p>
+            <p className="text-sm font-bold text-slate-950">{t('brand')}</p>
             <p className="text-xs text-slate-500">{t('brandSubtitle')}</p>
           </div>
         </Link>

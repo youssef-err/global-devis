@@ -1,5 +1,6 @@
 {
   "Nav": {
+    "brand": "Global Devis",
     "brandSubtitle": "Studio de facturation",
     "home": "Accueil",
     "howItWorks": "Comment ça marche",
@@ -10,9 +11,16 @@
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "localeName": {
-      "en": "Anglais",
-      "ar": "Arabe",
-      "fr": "Français"
+      "en": "English",
+      "ar": "العربية",
+      "fr": "Français",
+      "es": "Español",
+      "de": "Deutsch",
+      "pt": "Português",
+      "nl": "Nederlands",
+      "it": "Italiano",
+      "ru": "Русский",
+      "tr": "Türkçe"
     }
   },
   "HomePage": {
@@ -164,12 +172,30 @@
     "arreteA": "Arrêtée à:"
   },
   "TopBar": {
+    "brand": "Global Devis",
     "save": "Enregistrer la facture",
     "saved": "Enregistré",
     "reset": "Nouvelle facture",
     "duplicate": "Dupliquer",
     "logout": "Déconnexion",
-    "history": "Historique"
+    "history": "Historique",
+    "supportCta": "Soutenir ce projet ❤️",
+    "sync": {
+      "idle": "Synchronisé",
+      "syncing": "Synchronisation",
+      "offline": "Hors ligne",
+      "error": "Erreur"
+    }
+  },
+  "Donation": {
+    "title": "Soutenir ce projet",
+    "description": "Cet outil est gratuit. S’il vous a fait gagner du temps, un petit pourboire compte beaucoup.",
+    "footnote": "Pas de compte requis · Chaque contribution aide",
+    "options": {
+      "buyMeACoffee": "Buy Me a Coffee",
+      "kofi": "Ko-fi",
+      "paypal": "PayPal"
+    }
   },
   "Preview": {
     "previewExport": "Aperçu et export",
@@ -199,6 +225,91 @@
     "noMatches": "Aucune facture ne correspond aux filtres actuels.",
     "unnamedClient": "Client sans nom",
     "duplicate": "Dupliquer",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "credibilityLine": "Approuvé par les freelances du monde entier",
+    "trustMessage": "100% gratuit. Pas d'inscription requise. Vos données restent sur votre appareil."
+  },
+  "Form": {
+    "ice": "ICE (15 chiffres)",
+    "icePlaceholder": "Ex: 001122334455667",
+    "iceClient": "ICE Client (optionnel)",
+    "iceClientPlaceholder": "ICE du client",
+    "purposePlaceholder": "ex: Prestation de Service, Vente de Produit",
+    "notesPlaceholder": "Notes ou remarques (optionnel)",
+    "themeColor": "Couleur du thème",
+    "signature": "Signature",
+    "signatureChooseMethod": "Choisissez une méthode pour ajouter la signature",
+    "signatureDrawn": "Signature Dessinée",
+    "signatureUpload": "Importer",
+    "signatureSignHere": "Signez ci-dessous pour valider la facture",
+    "signatureClear": "Effacer",
+    "signatureValidate": "Valider la signature",
+    "signatureUploadPrompt": "Importer une image de signature (PNG, JPG)",
+    "signatureClickUpload": "Cliquez pour importer",
+    "signatureOrDrag": "ou glissez votre image",
+    "signaturePreview": "Aperçu:",
+    "signatureRemove": "Supprimer la signature"
+  },
+  "Legal": {
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "lastUpdated": "Dernière mise à jour",
+      "section1Title": "1. Acceptation des conditions",
+      "section1Body": "En accédant et en utilisant le Générateur de Factures Global Devis (« le Service »), vous acceptez explicitement d'être lié par les conditions de cet accord. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser ce service.",
+      "section2Title": "2. Description du service",
+      "section2Body": "Global Devis fournit un outil décentralisé basé sur le navigateur permettant aux utilisateurs de générer, formater et télécharger des factures PDF standard. Nous offrons cet outil entièrement gratuitement.",
+      "section3Title": "3. Responsabilités de l'utilisateur et exactitude juridique",
+      "section3Body": "Vous reconnaissez que le Service est fourni « tel quel ». Bien que nos calculs visent à être très précis, vous êtes seul responsable de l'exactitude juridique, mathématique et fiscale des factures finales que vous distribuez à vos clients.",
+      "section4Title": "4. Propriété intellectuelle",
+      "section4Body": "La conception fondamentale, la mise en page, les graphiques et le code source du Service sont notre propriété et sont protégés par les lois applicables sur le droit d'auteur et les marques. Vous ne pouvez pas réclamer la propriété du Service lui-même.",
+      "section5Title": "5. Modifications du service",
+      "section5Body": "Nous nous réservons le droit de modifier, suspendre ou discontinuer le Service à tout moment avec ou sans préavis. Nous ne serons pas responsables envers vous ou un tiers pour toute modification, suspension ou discontinuation du Service.",
+      "section6Title": "6. Contact",
+      "section6Body": "Pour des demandes légales ou de support, contactez-nous à"
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "lastUpdated": "Dernière mise à jour",
+      "section1Title": "1. Informations que nous collectons",
+      "section1Body1": "Lorsque vous utilisez notre Générateur de Factures Gratuit, les données que vous saisissez (telles que votre nom d'entreprise, les détails du client et les chiffres financiers) sont traitées entièrement localement dans votre navigateur.",
+      "section1Body2": "Nous pouvons collecter passivement des informations non personnelles, telles que le type de navigateur, le type d'appareil et le système d'exploitation, à des fins analytiques.",
+      "section2Title": "2. Utilisation des cookies et du stockage local",
+      "section2Body": "Nous utilisons le stockage local du navigateur pour sauvegarder vos brouillons de factures afin que vous ne perdiez pas votre progression si vous fermez l'onglet.",
+      "section3Title": "3. Publicité tierce (Google AdSense)",
+      "section3Body1": "Nous utilisons Google AdSense pour afficher des publicités. Google, en tant que vendor tiers, utilise des cookies pour diffuser des annonces basées sur vos visites.",
+      "section3Body2": "Vous pouvez vous désinscrire de la publicité personnalisée en visitant les Paramètres des annonces Google.",
+      "section4Title": "4. Conformité RGPD et CCPA",
+      "section4Body": "Si vous êtes dans l'Espace Économique Européen (EEE), vous avez des droits explicites d'accès, de rectification ou d'effacement de vos données personnelles.",
+      "section5Title": "5. Résumé du stockage des données",
+      "section5Body": "Nous ne conservons pas de brouillons de factures sur nos serveurs par défaut. Les données de facturation sont conservées dans votre navigateur pour usage local."
+    }
+  },
+  "Auth": {
+    "signIn": "Se connecter",
+    "signInDesc": "Accédez à vos factures",
+    "signUp": "Créer un compte",
+    "signUpDesc": "Commencer la synchronisation",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "signInButton": "Se connecter",
+    "signUpButton": "Créer un compte",
+    "orContinue": "Ou continuer avec",
+    "signInGoogle": "Se connecter avec Google",
+    "signUpGoogle": "S'inscrire avec Google"
+  },
+  "InvoiceCTA": {
+    "title": "Prêt à créer votre première facture ?",
+    "description": "Rejoignez des milliers de freelances et de petites entreprises. Générez des factures PDF entièrement personnalisables avec trois modèles différents gratuitement en quelques secondes.",
+    "cta": "Commencer gratuitement"
+  },
+  "Blog": {
+    "invoiceCtaTitle": "Essayez notre générateur de factures",
+    "invoiceCtaDesc": "Créez des factures professionnelles en quelques secondes. Gratuit, sans inscription requise.",
+    "createInvoice": "Créer une facture",
+    "relatedArticles": "Articles connexes"
   }
 }

@@ -17,6 +17,14 @@ export const trackEvent = (action: string, params?: Record<string, any>) => {
   }
 };
 
+export const trackPageView = (pagePath: string) => {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function' && GA_MEASUREMENT_ID) {
+    window.gtag('event', 'page_view', {
+      page_path: pagePath
+    });
+  }
+};
+
 export const AnalyticsEvents = {
   // Triggered when the user hits export PDF
   PDF_DOWNLOAD: 'pdf_download',
@@ -25,5 +33,11 @@ export const AnalyticsEvents = {
   // Triggered when the user changes template (classic, modern, minimal)
   TEMPLATE_SWITCH: 'template_switch',
   // Triggered when the user changes language (UI interface language)
-  LANGUAGE_SWITCH: 'language_switch'
+  LANGUAGE_SWITCH: 'language_switch',
+  // Triggered when the user clicks a blog article link
+  BLOG_CLICK: 'blog_click',
+  // Blog analytics events
+  SCROLL_DEPTH: 'scroll_depth',
+  TIME_ON_PAGE: 'time_on_page',
+  AD_VISIBLE: 'ad_visible'
 };

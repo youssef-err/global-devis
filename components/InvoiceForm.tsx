@@ -3,21 +3,19 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import {
-  Check,
-  Download,
   Plus,
   Trash2,
   Building2,
   User,
   Settings2,
   FileText,
-  Palette,
   PenTool
 } from 'lucide-react';
 import SignatureCanvas from 'react-signature-canvas';
 import { Tajawal } from 'next/font/google';
 import { numberToArabicWords } from '@/lib/numberToArabic';
 import SmartActionsToolbar from './SmartActionsToolbar';
+import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
 const tajawal = Tajawal({
   subsets: ['arabic'],
@@ -115,12 +113,14 @@ function calculateInvoiceTotals(items: InvoiceItem[], taxRate: number, discount:
 // --- Sub-components (Formatting Toolkit) ---
 function FormSection({ title, icon, children }: { title: string; icon: ReactNode; children: ReactNode }) {
   return (
-    <section className="rounded-[2rem] border border-slate-100 bg-white p-6 mb-6 shadow-sm">
+    <section className="app-card">
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">{icon}</div>
-        <h2 className="text-lg font-bold text-slate-800">{title}</h2>
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-50 text-slate-900 ring-1 ring-slate-200">
+          {icon}
+        </div>
+        <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
       </div>
-      <div className="space-y-4">{children}</div>
+      <div className="space-y-5">{children}</div>
     </section>
   );
 }
@@ -128,7 +128,7 @@ function FormSection({ title, icon, children }: { title: string; icon: ReactNode
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="flex flex-col gap-1.5 w-full">
-      <span className="text-[13px] font-bold text-slate-500 mr-1 font-tajawal">{label}</span>
+      <span className="text-sm text-slate-500">{label}</span>
       {children}
     </label>
   );
@@ -136,14 +136,13 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 
 export default function InvoiceForm() {
   const t = useTranslations('Form');
-  const tHome = useTranslations('HomePage');
   const tInvoice = useTranslations('Invoice');
   const locale = useLocale();
   const isArabic = locale === 'ar';
   
   const [mounted, setMounted] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const [exportSuccess, setExportSuccess] = useState(false);
+  const [, setIsExporting] = useState(false);
+  const [, setExportSuccess] = useState(false);
 
   const [details, setDetails] = useState<InvoiceDetails>({
     companyName: '', companyEmail: '', companyAddress: '', companyLogo: '',
@@ -206,6 +205,11 @@ export default function InvoiceForm() {
     const pdf = new jsPDF('p', 'mm', 'a4');
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
     pdf.save(`${details.number}.pdf`);
+    trackEvent(AnalyticsEvents.PDF_DOWNLOAD, {
+      invoice_number: details.number,
+      currency: details.currency,
+      total: Number(totalTTC.toFixed(2))
+    });
     setIsExporting(false);
     setExportSuccess(true);
     setTimeout(() => setExportSuccess(false), 2000);
@@ -213,18 +217,24 @@ export default function InvoiceForm() {
 
   if (!mounted) return null;
 
-  const inputClass = "w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-tajawal";
+  const inputClass =
+    "app-input h-10 text-sm focus:ring-2 focus:ring-black/20";
 
   return (
-    <div className={`min-h-screen bg-[#fcfdfe] pb-20 ${isArabic ? tajawal.variable : ''} font-arabic`} dir={isArabic ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen bg-slate-50 pb-20 ${isArabic ? tajawal.variable : ''} font-arabic animate-fade-up`} dir={isArabic ? 'rtl' : 'ltr'}>
       <div className="mx-auto max-w-[1400px] px-6 pt-10">
         
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_520px] gap-6 items-start">
           
           {/* 🛠️ Editor Column */}
           <div className="space-y-6">
-            <div className="sticky top-0 bg-white/80 backdrop-blur-md z-10 -mx-6 px-6 py-4 border-b border-slate-100 mb-8">
-              <h1 className="text-3xl font-black text-slate-900">Create Invoice</h1>
+            <div className="sticky top-0 z-10 -mx-6 mb-6 border-b border-slate-200 bg-white/85 px-6 py-4 backdrop-blur-md">
+              <h1 className="text-2xl font-semibold text-slate-900">{t('workspaceTitle')}</h1>
+              <p className="mt-1 text-sm text-slate-500">{t('workspaceDescription')}</p>
+              <p className="mt-3 text-sm text-slate-700">{t('credibilityLine')}</p>
+              <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                {t('trustMessage')}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -239,18 +249,18 @@ export default function InvoiceForm() {
                       };
                       reader.readAsDataURL(file);
                     }
-                  }} className={`${inputClass} file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100`}/>
+                  }} className={`${inputClass} file:me-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-black/90`}/>
                 </Field>
                 <Field label={t('yourCompanyName')}><input className={inputClass} value={details.companyName} onChange={e => updateDetails('companyName', e.target.value)}/></Field>
                 <Field label={t('email')}><input className={inputClass} value={details.companyEmail} onChange={e => updateDetails('companyEmail', e.target.value)}/></Field>
-                <Field label="ICE (15 chiffres)"><input className={inputClass} value={details.companyIce || ''} onChange={e => updateDetails('companyIce', e.target.value)} maxLength={15} placeholder="Ex: 001122334455667"/></Field>
+                <Field label={t('ice')}><input className={inputClass} value={details.companyIce || ''} onChange={e => updateDetails('companyIce', e.target.value)} maxLength={15} placeholder={t('icePlaceholder')}/></Field>
                 <Field label={t('companyAddress')}><textarea className={`${inputClass} h-20`} value={details.companyAddress} onChange={e => updateDetails('companyAddress', e.target.value)}/></Field>
               </FormSection>
 
               <FormSection title={t('clientInfo')} icon={<User size={20}/>}>
                 <Field label={t('clientName')}><input className={inputClass} value={details.clientName} onChange={e => updateDetails('clientName', e.target.value)}/></Field>
                 <Field label={t('email')}><input className={inputClass} value={details.clientEmail} onChange={e => updateDetails('clientEmail', e.target.value)}/></Field>
-                <Field label="ICE Client (optionnel)"><input className={inputClass} value={details.clientIce || ''} onChange={e => updateDetails('clientIce', e.target.value)} maxLength={15} placeholder="ICE du client"/></Field>
+                <Field label={t('iceClient')}><input className={inputClass} value={details.clientIce || ''} onChange={e => updateDetails('clientIce', e.target.value)} maxLength={15} placeholder={t('iceClientPlaceholder')}/></Field>
                 <Field label={t('clientAddress')}><textarea className={`${inputClass} h-20`} value={details.clientAddress} onChange={e => updateDetails('clientAddress', e.target.value)}/></Field>
               </FormSection>
             </div>
@@ -271,8 +281,8 @@ export default function InvoiceForm() {
                 <Field label={t('discount')}><input type="number" className={inputClass} value={details.discount} onChange={e => updateDetails('discount', Number(e.target.value))}/></Field>
                 <Field label={t('shippingFee')}><input type="number" className={inputClass} value={details.shippingFee} onChange={e => updateDetails('shippingFee', Number(e.target.value))}/></Field>
               </div>
-              <Field label={tInvoice('purpose')}><input type="text" className={inputClass} value={details.invoicePurpose || ''} onChange={e => updateDetails('invoicePurpose', e.target.value)} placeholder="ex: Prestation de Service, Vente de Produit"/></Field>
-              <Field label={tInvoice('notes')}><textarea className={`${inputClass} h-20`} value={details.notes} onChange={e => updateDetails('notes', e.target.value)} placeholder="Notes ou remarques (optionnel)"/></Field>
+              <Field label={tInvoice('purpose')}><input type="text" className={inputClass} value={details.invoicePurpose || ''} onChange={e => updateDetails('invoicePurpose', e.target.value)} placeholder={t('purposePlaceholder')}/></Field>
+              <Field label={tInvoice('notes')}><textarea className={`${inputClass} h-20`} value={details.notes} onChange={e => updateDetails('notes', e.target.value)} placeholder={t('notesPlaceholder')}/></Field>
               <div className="mt-4">
                 <Field label="Theme Color">
                   <div className="flex items-center gap-3">
@@ -290,21 +300,21 @@ export default function InvoiceForm() {
 
             <FormSection title={t('items')} icon={<FileText size={20}/>}>
               {items.map((item) => (
-                <div key={item.id} className="flex gap-3 mb-3 items-center bg-slate-50 p-3 rounded-xl">
+                <div key={item.id} className="flex gap-3 mb-3 items-center rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition-all">
                   <div className="flex-grow"><input placeholder={t('description')} className={inputClass} value={item.description} onChange={e => updateItem(item.id, {description: e.target.value})}/></div>
-                  <div className="w-20"><input type="number" placeholder="Qty" className={inputClass} value={item.quantity} onChange={e => updateItem(item.id, {quantity: Number(e.target.value)})}/></div>
-                  <div className="w-24"><input type="number" placeholder="Price" className={inputClass} value={item.price} onChange={e => updateItem(item.id, {price: Number(e.target.value)})}/></div>
-                  <button onClick={() => setItems(items.filter(i => i.id !== item.id))} className="text-red-400 hover:text-red-600 p-1"><Trash2 size={18}/></button>
+                  <div className="w-24"><input type="number" placeholder={t('qty')} className={inputClass} value={item.quantity} onChange={e => updateItem(item.id, {quantity: Number(e.target.value)})}/></div>
+                  <div className="w-28"><input type="number" placeholder={t('rate')} className={inputClass} value={item.price} onChange={e => updateItem(item.id, {price: Number(e.target.value)})}/></div>
+                  <button onClick={() => setItems(items.filter(i => i.id !== item.id))} className="rounded-lg p-2 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors" aria-label={t('deleteRow')}><Trash2 size={18}/></button>
                 </div>
               ))}
-              <button onClick={() => setItems([...items, {id: Date.now().toString(), description: '', quantity: 1, price: 0}])} className="flex items-center gap-2 text-indigo-600 font-bold mt-2 hover:underline">
+              <button onClick={() => setItems([...items, {id: Date.now().toString(), description: '', quantity: 1, price: 0}])} className="app-btn app-btn-secondary w-full">
                 <Plus size={18}/> {t('addLineItem')}
               </button>
             </FormSection>
 
             <FormSection title={tInvoice('signature')} icon={<PenTool size={20}/>}>
               <div className="space-y-4">
-                <p className="text-sm text-slate-600">Choisissez une méthode pour ajouter la signature</p>
+                <p className="text-sm text-slate-600">{t('signatureChooseMethod')}</p>
                 
                 {/* Mode Selection Tabs */}
                 <div className="flex gap-2 border-b border-slate-200">
@@ -317,7 +327,7 @@ export default function InvoiceForm() {
                         : 'text-slate-500 hover:text-slate-700'
                     }`}
                   >
-                    <PenTool size={14} className="inline mr-1" /> Signature Dessinée
+                    <PenTool size={14} className="inline mr-1" /> {t('signatureDrawn')}
                   </button>
                   <button
                     type="button"
@@ -328,14 +338,14 @@ export default function InvoiceForm() {
                         : 'text-slate-500 hover:text-slate-700'
                     }`}
                   >
-                    📤 Importer
+                    📤 {t('signatureUpload')}
                   </button>
                 </div>
 
                 {/* Canvas Mode */}
                 {signatureMode === 'canvas' && (
                   <div className="space-y-3">
-                    <p className="text-sm text-slate-600">Signez ci-dessous pour valider la facture</p>
+                    <p className="text-sm text-slate-600">{t('signatureSignHere')}</p>
                     <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
                       <SignatureCanvas
                         ref={sigCanvasRef}
@@ -362,7 +372,7 @@ export default function InvoiceForm() {
                         }}
                         className="px-4 py-2 text-sm bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors"
                       >
-                        Effacer
+                        {t('signatureClear')}
                       </button>
                       <button
                         type="button"
@@ -374,7 +384,7 @@ export default function InvoiceForm() {
                         }}
                         className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                       >
-                        ✓ Valider la signature
+                        ✓ {t('signatureValidate')}
                       </button>
                     </div>
                   </div>
@@ -383,7 +393,7 @@ export default function InvoiceForm() {
                 {/* Upload Mode */}
                 {signatureMode === 'upload' && (
                   <div className="space-y-3">
-                    <p className="text-sm text-slate-600">Importer une image de signature (PNG, JPG)</p>
+                    <p className="text-sm text-slate-600">{t('signatureUploadPrompt')}</p>
                     <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 bg-slate-50 text-center cursor-pointer hover:bg-slate-100 transition-colors">
                       <input
                         type="file"
@@ -405,13 +415,14 @@ export default function InvoiceForm() {
                       />
                       <label htmlFor="signature-upload" className="cursor-pointer">
                         <div className="text-2xl mb-2">📸</div>
-                        <p className="font-bold text-slate-700">Cliquez pour importer</p>
-                        <p className="text-xs text-slate-500 mt-1">ou glissez votre image</p>
+                        <p className="font-bold text-slate-700">{t('signatureClickUpload')}</p>
+                        <p className="text-xs text-slate-500 mt-1">{t('signatureOrDrag')}</p>
                       </label>
                     </div>
                     {signature && (
                       <div className="mt-4 p-3 bg-slate-50 rounded-lg">
-                        <p className="text-xs font-bold text-slate-600 mb-2">Aperçu:</p>
+                        <p className="text-xs font-bold text-slate-600 mb-2">{t('signaturePreview')}</p>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={signature} alt="Signature preview" className="h-16 bg-white p-2 rounded border border-slate-200" />
                       </div>
                     )}
@@ -424,7 +435,7 @@ export default function InvoiceForm() {
                         }}
                         className="px-4 py-2 w-full text-sm bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors"
                       >
-                        Supprimer la signature
+                        {t('signatureRemove')}
                       </button>
                     )}
                   </div>
@@ -440,115 +451,184 @@ export default function InvoiceForm() {
               onPdfDownload={downloadPDF}
             />
 
-            <div id="invoice-preview" className="bg-white aspect-[1/1.414] shadow-2xl rounded-sm p-10 border border-slate-100 flex flex-col overflow-hidden" style={{ pageBreakInside: 'avoid' }}>
-              <div className="flex justify-between items-start mb-12">
-                <div>
-                  <h2 className="text-4xl font-black text-slate-900 mb-1 tracking-tighter italic" style={{ color: themeColor }}>{tInvoice('invoiceTitle')}</h2>
-                  <p className="text-slate-400 font-mono text-sm">#{details.number}</p>
+            {/* Paper frame */}
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div
+                id="invoice-preview"
+                className="mx-auto w-full max-w-[21cm] overflow-hidden rounded-md bg-white shadow-[0_24px_80px_rgba(15,23,42,0.10)] ring-1 ring-slate-200"
+                style={{ pageBreakInside: 'avoid' }}
+              >
+                {/* Document */}
+                <div className="min-h-[29.7cm] p-10">
+                  {/* Header */}
+                  <header className="flex items-start justify-between gap-10 border-b border-slate-200 pb-6">
+                    <div className={`min-w-0 ${isArabic ? 'order-2 text-end' : 'order-1 text-start'}`}>
+                      <p className="text-sm font-semibold text-slate-900">{details.companyName || t('previewNoClient')}</p>
+                      {details.companyIce ? (
+                        <p className="mt-1 text-xs text-slate-500">ICE: {details.companyIce}</p>
+                      ) : null}
+                      {details.companyAddress ? (
+                        <p className="mt-2 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{details.companyAddress}</p>
+                      ) : null}
+                      {details.companyEmail ? (
+                        <p className="mt-2 text-sm text-slate-600">{details.companyEmail}</p>
+                      ) : null}
+                    </div>
+
+                    <div className={`shrink-0 ${isArabic ? 'order-1 text-start' : 'order-2 text-end'}`}>
+                      <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+                        {tInvoice('invoiceTitle')}
+                      </h2>
+                      <p className="mt-1 text-sm text-slate-500 tabular-nums">#{details.number}</p>
+                      <div className="mt-4 space-y-2 text-sm">
+                        <div className="flex items-center justify-between gap-6">
+                          <span className="text-slate-500">{t('date')}</span>
+                          <span className="font-medium text-slate-900 tabular-nums">{details.date}</span>
+                        </div>
+                        <div className="flex items-center justify-between gap-6">
+                          <span className="text-slate-500">{t('dueDate')}</span>
+                          <span className="font-medium text-slate-900 tabular-nums">{details.dueDate || '—'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </header>
+
+                  {/* Bill to + purpose */}
+                  <section className="mt-6 grid grid-cols-2 gap-10">
+                    <div className={isArabic ? 'text-end' : 'text-start'}>
+                      <p className="text-sm font-semibold text-slate-900">{t('billTo')}</p>
+                      <p className="mt-2 text-sm font-medium text-slate-900">{details.clientName || t('previewNoClient')}</p>
+                      {details.clientIce ? <p className="mt-1 text-xs text-slate-500">ICE: {details.clientIce}</p> : null}
+                      <p className="mt-2 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{details.clientAddress || '—'}</p>
+                      {details.clientEmail ? <p className="mt-2 text-sm text-slate-600">{details.clientEmail}</p> : null}
+                    </div>
+
+                    <div className={isArabic ? 'text-start' : 'text-end'}>
+                      <p className="text-sm font-semibold text-slate-900">{tInvoice('purpose')}</p>
+                      <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                        {details.invoicePurpose || t('previewDescriptionPlaceholder')}
+                      </p>
+                    </div>
+                  </section>
+
+                  {/* Items */}
+                  <section className="mt-8">
+                    <table className="w-full border-separate border-spacing-0 text-sm">
+                      <thead>
+                        <tr className="text-slate-500">
+                          <th className={`border-y border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold ${isArabic ? 'text-end' : 'text-start'}`}>
+                            {t('description')}
+                          </th>
+                          <th className="border-y border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold text-end">
+                            {t('qty')}
+                          </th>
+                          <th className="border-y border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold text-end">
+                            {t('rate')}
+                          </th>
+                          <th className="border-y border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold text-end">
+                            {t('amount')}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {items.map((item) => {
+                          const lineTotal = item.price * item.quantity;
+                          return (
+                            <tr key={item.id} className="hover:bg-slate-50/70 transition-colors">
+                              <td className={`border-b border-slate-100 px-4 py-3.5 align-top ${isArabic ? 'text-end' : 'text-start'}`}>
+                                <div className="font-medium text-slate-900 leading-relaxed">
+                                  {item.description || t('previewDescriptionPlaceholder')}
+                                </div>
+                              </td>
+                              <td className="border-b border-slate-100 px-4 py-3.5 text-end tabular-nums text-slate-700">
+                                {item.quantity}
+                              </td>
+                              <td className="border-b border-slate-100 px-4 py-3.5 text-end tabular-nums text-slate-700">
+                                {item.price.toFixed(2)} {getCurrencySymbol(details.currency)}
+                              </td>
+                              <td className="border-b border-slate-100 px-4 py-3.5 text-end tabular-nums font-medium text-slate-900">
+                                {lineTotal.toFixed(2)} {getCurrencySymbol(details.currency)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </section>
+
+                  {/* Totals */}
+                  <section className={`mt-10 flex ${isArabic ? 'justify-start' : 'justify-end'}`}>
+                    <div className="w-[320px] rounded-xl border border-slate-200 bg-slate-50 p-5">
+                      <div className="flex items-center justify-between py-1.5 text-sm text-slate-600">
+                        <span>{tInvoice('sousTotalHT')}</span>
+                        <span className="tabular-nums">{subtotal.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
+                      </div>
+
+                      {details.taxRate > 0 ? (
+                        <div className="flex items-center justify-between py-1.5 text-sm text-slate-700">
+                          <span className="font-medium">
+                            {tInvoice('tvaLabel').replace('{rate}', details.taxRate.toString())}
+                          </span>
+                          <span className="tabular-nums">+{taxAmount.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
+                        </div>
+                      ) : null}
+
+                      {details.discount > 0 ? (
+                        <div className="flex items-center justify-between py-1.5 text-sm text-slate-700">
+                          <span className="font-medium">{tInvoice('reductionLabel')}</span>
+                          <span className="tabular-nums">-{details.discount.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
+                        </div>
+                      ) : null}
+
+                      {details.shippingFee > 0 ? (
+                        <div className="flex items-center justify-between py-1.5 text-sm text-slate-700">
+                          <span className="font-medium">{tInvoice('fraisDePortLabel')}</span>
+                          <span className="tabular-nums">+{details.shippingFee.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
+                        </div>
+                      ) : null}
+
+                      <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-3 text-base font-semibold text-slate-900">
+                        <span>{tInvoice('totalTTCLabel')}</span>
+                        <span className="tabular-nums">{totalTTC.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Notes + signature */}
+                  <footer className="mt-10 border-t border-slate-200 pt-6">
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+                      <div className={isArabic ? 'text-end' : 'text-start'}>
+                        <p className="text-sm font-semibold text-slate-900">{t('notes')}</p>
+                        <p className="mt-2 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">
+                          {details.notes || t('previewNotesFallback')}
+                        </p>
+                        <div className="mt-5 rounded-lg bg-slate-50 p-4" style={{ unicodeBidi: 'isolate' }}>
+                          <p className="text-xs font-medium text-slate-500">{tInvoice('arreteA')}</p>
+                          <p className="mt-1 text-sm text-slate-700 leading-relaxed">
+                            {isArabic ? numberToArabicWords(totalTTC) : totalInWords}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className={isArabic ? 'text-start' : 'text-end'}>
+                        <p className="text-sm font-semibold text-slate-900">{tInvoice('signature')}</p>
+                        <div className="mt-3 inline-flex w-full justify-end">
+                          <div className="w-64 rounded-lg border border-dashed border-slate-300 bg-white p-4">
+                            {details.signatureImage ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={details.signatureImage} alt={tInvoice('signature')} className="h-12 w-full object-contain" />
+                            ) : (
+                              <div className="h-12" />
+                            )}
+                            <div className="mt-3 h-px w-full bg-slate-200" />
+                            <p className="mt-2 text-xs text-slate-500">{tInvoice('signature')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </footer>
                 </div>
-                <div className="text-start">
-                  <p className="font-bold text-lg" style={{ color: themeColor }}>{details.companyName || 'Your Company'}</p>
-                  {details.companyIce && <p className="text-[10px] text-slate-500">ICE: {details.companyIce}</p>}
-                  <p className="text-[10px] text-slate-400 max-w-[150px] leading-tight">{details.companyAddress}</p>
-                </div>
               </div>
-
-              <div className="grid grid-cols-2 gap-10 mb-12">
-                <div>
-                  <p className="text-[10px] font-bold uppercase mb-2 tracking-widest" style={{ color: themeColor }}>{t('billTo')}</p>
-                  <p className="font-bold text-slate-800">{details.clientName || 'Client Name'}</p>
-                  {details.clientIce && <p className="text-[10px] text-slate-500">ICE: {details.clientIce}</p>}
-                  <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{details.clientAddress}</p>
-                </div>
-                <div className="text-start space-y-1">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('date')}</p>
-                  <p className="text-sm font-bold">{details.date}</p>
-                  {details.dueDate && <><p className="text-[10px] font-bold text-slate-400 uppercase pt-2 tracking-widest">{t('dueDate')}</p><p className="text-sm font-bold">{details.dueDate}</p></>}
-                </div>
-              </div>
-
-              {/* Items Table with HT/TTC Distinction */}
-              <table className="w-full mb-8">
-                <thead className="border-b-2 border-slate-900">
-                  <tr className="text-[10px] font-black text-slate-900 uppercase tracking-tighter">
-                    <th className="py-3 text-start">{t('description')}</th>
-                    <th className="py-3 text-center w-16">{t('qty')}</th>
-                    <th className="py-3 text-center w-20">Prix HT</th>
-                    <th className="py-3 text-end w-24">Total HT</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {items.map(item => (
-                    <tr key={item.id} className="text-[10px] page-break-inside-avoid">
-                      <td className="py-3 font-medium text-slate-700">{item.description || '...'}</td>
-                      <td className="py-3 text-center text-slate-500">{item.quantity}</td>
-                      <td className="py-3 text-center text-slate-600">{item.price.toFixed(2)} {getCurrencySymbol(details.currency)}</td>
-                      <td className="py-3 text-end font-bold">{(item.price * item.quantity).toFixed(2)} {getCurrencySymbol(details.currency)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-        {/* Footer */}
-        <div className="mt-auto pt-6 border-t-4 flex justify-between items-start gap-8 print:fixed print:bottom-0 print:left-0 print:right-0 print:bg-white print:p-4 print:border-t print:border-slate-200" style={{ borderTopColor: themeColor }}>
-          {/* Left: Notes & Signature */}
-          <div className="flex-1 max-w-[280px]">
-            <div className="mb-6">
-              <p className="text-[9px] font-bold text-slate-400 uppercase mb-1 tracking-widest">{t('notes')}</p>
-              <p className="text-[9px] text-slate-500 italic leading-tight">{details.notes || 'Thank you for your business.'}</p>
-            </div>
-            
-            {/* Arabic/French Totals in Words */}
-            <div className="mb-6 p-3 bg-slate-50 rounded" style={{ unicodeBidi: 'isolate' }}>
-              <p className="text-[8px] font-bold text-slate-400 uppercase mb-1 tracking-widest">{tInvoice('arreteA')}</p>
-              <p className="text-[9px] text-slate-600 italic leading-tight font-medium">
-                {isArabic ? numberToArabicWords(totalTTC) : totalInWords}
-              </p>
-            </div>
-
-            {/* Signature Display */}
-            {details.signatureImage && (
-              <div>
-                <p className="text-[9px] font-bold text-slate-400 uppercase mb-2 tracking-widest">Signature</p>
-                <img src={details.signatureImage} alt="Signature" className="h-10 max-w-[150px]" />
-              </div>
-            )}
-          </div>
-
-          {/* Right: Totals Breakdown (HT/TTC) */}
-          <div className="w-56 space-y-2 text-end">
-            <div className="flex justify-between text-[10px] font-bold text-slate-600">
-              <span>{tInvoice('sousTotalHT')}</span>
-              <span>{subtotal.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
-            </div>
-            
-            {details.taxRate > 0 && (
-              <div className="flex justify-between text-[10px] font-bold text-slate-600">
-                <span>{tInvoice('tvaLabel').replace('{rate}', details.taxRate.toString())}</span>
-                <span className="text-amber-600">+{taxAmount.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
-              </div>
-            )}
-            
-            {details.discount > 0 && (
-              <div className="flex justify-between text-[10px] font-bold text-emerald-600">
-                <span>{tInvoice('reductionLabel')}</span>
-                <span>-{details.discount.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
-              </div>
-            )}
-            
-            {details.shippingFee > 0 && (
-              <div className="flex justify-between text-[10px] font-bold text-slate-600">
-                <span>{tInvoice('fraisDePortLabel')}</span>
-                <span>+{details.shippingFee.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
-              </div>
-            )}
-            
-            <div className="flex justify-between text-sm font-black text-slate-900 border-t-2 border-slate-200 pt-2 mt-2">
-              <span>{tInvoice('totalTTCLabel')}</span>
-              <span style={{ color: themeColor }}>{totalTTC.toFixed(2)} {getCurrencySymbol(details.currency)}</span>
-            </div>
-          </div>
-        </div>
             </div>
           </div>
 

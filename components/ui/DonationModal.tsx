@@ -1,15 +1,24 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-const options = [
+type DonationOptionKey = 'buyMeACoffee' | 'kofi' | 'paypal';
+
+const options: Array<{
+  key: DonationOptionKey;
+  href: string;
+  color: string;
+  icon: ReactNode;
+}> = [
   {
-    name: 'Buy Me a Coffee',
+    key: 'buyMeACoffee',
     href: 'https://buymeacoffee.com',
     color: 'bg-[#FFDD00] text-slate-900 hover:bg-[#f0ce00]',
     icon: (
@@ -21,7 +30,7 @@ const options = [
     ),
   },
   {
-    name: 'Ko-fi',
+    key: 'kofi',
     href: 'https://ko-fi.com',
     color: 'bg-[#29ABE0] text-white hover:bg-[#2299c8]',
     icon: (
@@ -31,7 +40,7 @@ const options = [
     ),
   },
   {
-    name: 'PayPal',
+    key: 'paypal',
     href: 'https://paypal.me',
     color: 'bg-[#0070BA] text-white hover:bg-[#005ea6]',
     icon: (
@@ -44,6 +53,7 @@ const options = [
 
 export default function DonationModal({ open, onClose }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations('Donation');
 
   // Close on Escape
   useEffect(() => {
@@ -65,12 +75,12 @@ export default function DonationModal({ open, onClose }: Props) {
       <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-sm" />
 
       {/* Modal */}
-      <div className="animate-scale-in relative w-full max-w-sm rounded-2xl bg-white p-7 shadow-2xl ring-1 ring-slate-200/60">
+      <div className="animate-pop relative w-full max-w-sm rounded-2xl bg-white p-7 shadow-2xl ring-1 ring-slate-200/60">
         {/* Close */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+          className="absolute end-4 top-4 flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
         >
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} className="h-3.5 w-3.5">
             <path d="M4 4l8 8M12 4l-8 8" strokeLinecap="round" />
@@ -78,11 +88,11 @@ export default function DonationModal({ open, onClose }: Props) {
         </button>
 
         {/* Heading */}
-        <div className="mb-5 text-center">
+        <div className="mb-6 text-center">
           <span className="text-3xl">❤️</span>
-          <h2 className="mt-2 text-base font-semibold text-slate-900">Support this project</h2>
-          <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">
-            This tool is free. If it saved you time,<br />a small tip means a lot.
+          <h2 className="mt-3 text-lg font-semibold text-slate-900">{t('title')}</h2>
+          <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+            {t('description')}
           </p>
         </div>
 
@@ -90,21 +100,21 @@ export default function DonationModal({ open, onClose }: Props) {
         <div className="flex flex-col gap-2.5">
           {options.map((opt) => (
             <a
-              key={opt.name}
+              key={opt.key}
               href={opt.href}
               target="_blank"
               rel="noopener noreferrer"
               onClick={onClose}
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all active:scale-[0.98] ${opt.color}`}
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all active:scale-[0.98] hover:shadow-md ${opt.color}`}
             >
               {opt.icon}
-              {opt.name}
+              {t(`options.${opt.key}` as any)}
             </a>
           ))}
         </div>
 
         <p className="mt-4 text-center text-[11px] text-slate-400">
-          No account needed · Any amount helps
+          {t('footnote')}
         </p>
       </div>
     </div>

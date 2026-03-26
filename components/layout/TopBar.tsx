@@ -27,13 +27,6 @@ const syncDot: Record<SyncStatus, string> = {
   error:   'bg-red-400',
 };
 
-const syncText: Record<SyncStatus, string> = {
-  idle:    'Synced',
-  syncing: 'Syncing',
-  offline: 'Offline',
-  error:   'Error',
-};
-
 export default function TopBar({
   lang,
   onChangeLang,
@@ -48,6 +41,12 @@ export default function TopBar({
 }: TopBarProps) {
   const t = useTranslations('TopBar');
   const [donateOpen, setDonateOpen] = useState(false);
+  const syncText: Record<SyncStatus, string> = {
+    idle: t('sync.idle'),
+    syncing: t('sync.syncing'),
+    offline: t('sync.offline'),
+    error: t('sync.error')
+  };
 
   return (
     <header className="no-print sticky top-0 z-40 border-b border-slate-100 bg-white/95 backdrop-blur-sm">
@@ -59,7 +58,7 @@ export default function TopBar({
             GD
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-slate-900">Global Devis</span>
+            <span className="text-sm font-semibold text-slate-900">{t('brand')}</span>
             {savedFlash && (
               <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700 ring-1 ring-emerald-100">
                 {t('saved')}
@@ -106,10 +105,10 @@ export default function TopBar({
           <button
             type="button"
             onClick={() => setDonateOpen(true)}
-            className="hidden sm:flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+            className="hidden sm:flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors"
           >
-            <span>❤️</span>
-            <span className="hidden md:inline font-medium">Support</span>
+            <span aria-hidden="true">❤️</span>
+            <span className="hidden md:inline font-medium">{t('supportCta')}</span>
           </button>
 
           <button
@@ -123,7 +122,7 @@ export default function TopBar({
           <button
             type="button"
             onClick={onDuplicate}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-800 hover:bg-slate-50 active:scale-[0.98] transition-all"
           >
             {t('duplicate')}
           </button>
@@ -131,7 +130,7 @@ export default function TopBar({
           <button
             type="button"
             onClick={onSave}
-            className="rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700 active:scale-[0.98] transition-all"
+            className="rounded-lg bg-black px-4 py-1.5 text-sm font-medium text-white hover:bg-black/90 active:scale-[0.98] transition-all"
           >
             {t('save')}
           </button>

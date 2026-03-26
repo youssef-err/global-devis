@@ -1,5 +1,6 @@
-import Link from 'next/link';
 import { getAllPosts } from '@/lib/blog';
+import AdSenseUnit from '@/components/ads/AdSenseUnit';
+import TrackedBlogLink from '@/components/blog/TrackedBlogLink';
 
 interface BlogIndexPageProps {
   params: Promise<{ locale: string }>;
@@ -20,15 +21,18 @@ export default async function BlogIndexPage({ params }: BlogIndexPageProps) {
               ? 'نصائح ومقالات حول إعداد الفواتير وتنمية عملك المستقل.'
               : 'Tips and guides to help you invoice better and grow your freelance business.'}
           </p>
+          <div className="mt-8">
+            <AdSenseUnit slot="2200112233" format="auto" style={{ minHeight: '110px' }} className="rounded-xl border border-slate-200 bg-white" />
+          </div>
           <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20">
             {posts.map((post) => (
               <article key={post.slug} className="relative isolate flex flex-col gap-8 lg:flex-row">
                 <div className="group relative max-w-xl">
                   <h3 className="mt-3 text-2xl font-semibold leading-6 text-slate-900 group-hover:text-indigo-600">
-                    <Link href={`/${locale}/blog/${post.slug}`}>
+                    <TrackedBlogLink href={`/${locale}/blog/${post.slug}`} title={post.frontmatter.title}>
                       <span className="absolute inset-0" />
                       {post.frontmatter.title}
-                    </Link>
+                    </TrackedBlogLink>
                   </h3>
                   <div className="mt-3 flex items-center gap-x-4 text-xs">
                     <time dateTime={post.frontmatter.date} className="text-slate-500">

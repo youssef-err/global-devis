@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import AdSenseUnit from '@/components/ads/AdSenseUnit';
-import InvoiceCTA from '@/components/blog/InvoiceCTA';
+import TrackedBlogLink from '@/components/blog/TrackedBlogLink';
+import AffiliateRecommendations from '@/components/blog/AffiliateRecommendations';
+import BlogAnalytics from '@/components/blog/BlogAnalytics';
 import { getAllPosts, getPostBySlug, getPostSlugs, markdownToHtml } from '@/lib/blog';
 import { routing } from '@/i18n/routing';
 
@@ -42,6 +44,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: 'Blog' });
   const isAr = locale === 'ar';
   const post = getPostBySlug(slug, locale);
 
@@ -50,9 +53,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const contentHtml = await markdownToHtml(post.content);
+  const articleSections = contentHtml.split(/(?=<h2>)/g).filter(Boolean);
   const relatedPosts = getAllPosts(locale)
     .filter((candidate) => candidate.slug !== slug)
-    .slice(0, 3);
+    .slice(0, 2);
+  
+  const invoiceToolUrl = `/${locale}`;
 
   const hasFaqs = Boolean(post.frontmatter.faqs?.length);
   const faqSchema = hasFaqs
@@ -85,6 +91,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className={`min-h-screen bg-slate-50 py-16 ${isAr ? 'text-right' : 'text-left'}`} dir={isAr ? 'rtl' : 'ltr'}>
+      <BlogAnalytics />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       {hasFaqs && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
@@ -97,34 +104,78 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <p className="text-xl leading-8 text-slate-600">{post.frontmatter.description}</p>
         </header>
 
-        <article
-          className="prose prose-lg prose-slate max-w-none prose-a:text-indigo-600 prose-h2:mt-12 prose-h2:text-indigo-900"
-          dangerouslySetInnerHTML={{ __html: contentHtml }}
-        />
+        <div className="mb-12">
+          <AdSenseUnit slot="5566778899" format="auto" style={{ minHeight: '110px' }} />
+        </div>
+
+        <article className="prose prose-lg prose-slate max-w-none prose-a:text-indigo-600 prose-h2:mt-12 prose-h2:text-indigo-900">
+          {articleSections.map((section, index) => {
+            const isLastSection = index === articleSections.length - 1;
+            const shouldShowAd = !isLastSection && index >= 1 && (index + 1) % 2 === 0;
+            const showAffiliate = index === Math.floor(articleSections.length / 2);
+            
+            return (
+              <div key={`section-${index}`}>
+                <div dangerouslySetInnerHTML={{ __html: section }} />
+                {showAffiliate && (
+                  <AffiliateRecommendations
+                    links={[
+                      { name: 'Wave Accounting', url: 'https://www.waveapp.com', description: 'Free accounting & invoicing software for small businesses', type: 'tool' },
+                      { name: 'FreshBooks', url: 'https://www.freshbooks.com', description: 'Cloud accounting built for freelancers and self-employed', type: 'tool' },
+                    ]}
+                  />
+                )}
+                {shouldShowAd && (
+                  <div className="mt-6 mb-6">
+                    <AdSenseUnit slot="6677889900" format="auto" style={{ minHeight: '110px' }} />
+                  </div>
+                )}
+                {isLastSection && !hasFaqs && (
+                  <div className="mt-6 mb-6">
+                    <AdSenseUnit slot="6677889900" format="auto" style={{ minHeight: '110px' }} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </article>
 
         <div className="my-12 w-full">
           <AdSenseUnit slot="1122334455" format="rectangle" style={{ minHeight: '250px' }} />
         </div>
 
+        <div className={`mt-12 p-6 bg-indigo-50 rounded-xl border border-indigo-100 ${isAr ? 'text-right' : 'text-left'}`}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold text-indigo-900 mb-1">{t('invoiceCtaTitle')}</h3>
+              <p className="text-sm text-indigo-700">{t('invoiceCtaDesc')}</p>
+            </div>
+            <TrackedBlogLink href={invoiceToolUrl} title={t('createInvoice')} className="shrink-0">
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition">
+                {t('createInvoice')}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            </TrackedBlogLink>
+          </div>
+        </div>
+
         {relatedPosts.length > 0 && (
-          <div className="mt-16 border-t border-slate-200 pt-10">
-            <h3 className="mb-6 text-2xl font-bold text-slate-800">Related Articles</h3>
+          <div className={`mt-16 border-t border-slate-200 pt-10 ${isAr ? 'text-right' : 'text-left'}`}>
+            <h3 className="mb-6 text-xl font-bold text-slate-800">{t('relatedArticles')}</h3>
             <div className="grid gap-6 md:grid-cols-2">
               {relatedPosts.map((related) => (
-                <Link href={`/${locale}/blog/${related.slug}`} key={related.slug} className="group block">
-                  <div className="rounded-xl border border-slate-100 bg-slate-50 p-6 transition hover:shadow-md">
-                    <h4 className="mb-2 text-lg font-semibold text-indigo-600 group-hover:underline">{related.frontmatter.title}</h4>
+                <TrackedBlogLink href={`/${locale}/blog/${related.slug}`} title={related.frontmatter.title} key={related.slug} className="group block">
+                  <div className="rounded-xl border border-slate-100 bg-slate-50 p-5 transition hover:shadow-md hover:border-indigo-200">
+                    <h4 className="mb-2 font-semibold text-slate-800 group-hover:text-indigo-600 transition">{related.frontmatter.title}</h4>
                     <p className="line-clamp-2 text-sm text-slate-600">{related.frontmatter.description}</p>
                   </div>
-                </Link>
+                </TrackedBlogLink>
               ))}
             </div>
           </div>
         )}
-
-        <div className="mt-12">
-          <InvoiceCTA locale={locale} />
-        </div>
       </div>
     </div>
   );
