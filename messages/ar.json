@@ -251,7 +251,7 @@
   },
   "History": {
     "title": "الفواتير",
-    "subtitle": "ابحث وصفِّ وافتح أو كرر الفواتير المحفوظة.",
+    "subtitle": "ابحث وصفِّ وافتح أو كرر الفواتير المحفوظة.",
     "emptyTitle": "لا توجد فواتير محفوظة بعد",
     "emptyDesc": "احفظ فاتورة من الشريط العلوي وستظهر هنا.",
     "createFirst": "أنشئ أول فاتورة",
@@ -268,32 +268,6 @@
     "unnamedClient": "عميل بدون اسم",
     "duplicate": "تكرار",
     "delete": "حذف"
-  },
-  "Form": {
-    "ice": "المعرف الضريبي (15 رقم)",
-    "icePlaceholder": "مثال: 001122334455667",
-    "iceClient": "المعرف الضريبي للعميل (اختياري)",
-    "iceClientPlaceholder": "المعرف الضريبي للعميل",
-    "purposePlaceholder": "مثال: خدمات استشارية، بيع منتج",
-    "notesPlaceholder": "ملاحظات أو تعليقات (اختياري)",
-    "themeColor": "لون السمة",
-    "signature": "التوقيع",
-    "signatureChooseMethod": "اختر طريقة لإضافة التوقيع",
-    "signatureDrawn": "توقيع مرسوم",
-    "signatureUpload": "رفع",
-    "signatureSignHere": "وقع أدناه للتحقق من الفاتورة",
-    "signatureClear": "مسح",
-    "signatureValidate": "التحقق من التوقيع",
-    "signatureUploadPrompt": "ارفع صورة توقيع (PNG, JPG)",
-    "signatureClickUpload": "انقر للرفع",
-    "signatureOrDrag": "أو اسحب صورتك",
-    "signaturePreview": "معاينة:",
-    "signatureRemove": "إزالة التوقيع",
-    "companyInfoHelper": "أدخل معلومات شركتك",
-    "clientInfoHelper": "أضف بيانات العميل",
-    "step1": "شركتك",
-    "step2": "العميل",
-    "step3": "المعاينة والتصدير"
   },
   "Legal": {
     "terms": {
