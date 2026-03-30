@@ -2,6 +2,8 @@ import { getAllPosts } from '@/lib/blog';
 import AdSenseUnit from '@/components/ads/AdSenseUnit';
 import TrackedBlogLink from '@/components/blog/TrackedBlogLink';
 
+export const revalidate = 3600;
+
 interface BlogIndexPageProps {
   params: Promise<{ locale: string }>;
 }

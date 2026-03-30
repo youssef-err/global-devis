@@ -8,6 +8,8 @@ import BlogAnalytics from '@/components/blog/BlogAnalytics';
 import { getAllPosts, getPostBySlug, getPostSlugs, markdownToHtml } from '@/lib/blog';
 import { routing } from '@/i18n/routing';
 
+export const revalidate = 3600;
+
 interface BlogPostPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
