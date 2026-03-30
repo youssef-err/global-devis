@@ -203,7 +203,13 @@
     "freeBody": "The core invoice workflow is free so anyone can generate professional documents without friction.",
     "privacyTitle": "Privacy by default",
     "privacyBody": "Your draft invoice data stays on your device by default. You’re in control of what you export and share.",
-    "trustLine": "100% free. No signup required. Your data stays on your device."
+    "trustLine": "100% free. No signup required. Your data stays on your device.",
+    "trustedBy": "Trusted by freelancers worldwide",
+    "freelancersWorldwide": "10,000+ invoices generated",
+    "freeToUse": "Free to use",
+    "signupRequired": "No signup required",
+    "browserBased": "Runs in your browser",
+    "createFirstInvoice": "Create your first invoice"
   },
   "TopBar": {
     "brand": "Global Devis",
