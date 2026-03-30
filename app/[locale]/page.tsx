@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import InvoiceFormLazy from '@/components/InvoiceFormLazy';
+import InvoiceFormLazy from '@/components/invoice/InvoiceFormLazy';
 import Navbar from '@/components/layout/Navbar';
 import PremiumSection from '@/components/ui/PremiumSection';
 import { Link } from '@/i18n/routing';
