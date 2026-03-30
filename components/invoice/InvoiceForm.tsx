@@ -104,7 +104,6 @@ export default function InvoiceForm() {
   const [themeColor, setThemeColor] = useState('#3b82f6');
   const [signature, setSignature] = useState<string>('');
   const [signatureMode, setSignatureMode] = useState<'canvas' | 'upload'>('canvas');
-  const [currentStep, setCurrentStep] = useState(0);
 
   const sigCanvasRef = useRef<SignatureCanvas>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
@@ -122,9 +121,10 @@ export default function InvoiceForm() {
     { id: 2, label: t('step3') },
   ];
 
-  useEffect(() => {
-    if (details.companyName) setCurrentStep(1);
-    if (details.clientName) setCurrentStep(2);
+  const currentStep = useMemo(() => {
+    if (details.clientName) return 2;
+    if (details.companyName) return 1;
+    return 0;
   }, [details.companyName, details.clientName]);
 
   // --- Calculations ---
