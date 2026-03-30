@@ -2,7 +2,7 @@
 
 /* eslint-disable jsx-a11y/control-has-associated-label */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { InvoiceItem } from '@/types/invoice';
 import { useTranslations } from 'next-intl';
 
@@ -16,9 +16,9 @@ interface Props {
 }
 
 const cellInput = 'w-full bg-transparent px-2 py-1.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none';
-const numInput = `${cellInput} text-right tabular-nums`;
+const numInput = `${cellInput} text-end tabular-nums`;
 
-export default function ItemsSection({ items, onAddLine, onUpdateItem, onRemoveItem, focusDescriptionItemId, onFocusDescriptionHandled }: Props) {
+export default memo(function ItemsSection({ items, onAddLine, onUpdateItem, onRemoveItem, focusDescriptionItemId, onFocusDescriptionHandled }: Props) {
   const t = useTranslations('Form');
   const refs = useRef<Record<string, HTMLInputElement | null>>({});
 
@@ -29,7 +29,7 @@ export default function ItemsSection({ items, onAddLine, onUpdateItem, onRemoveI
   }, [focusDescriptionItemId, onFocusDescriptionHandled, items]);
 
   return (
-    <div className="rounded-xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
       <div className="px-6 pt-6 pb-3">
         <p className="text-sm font-medium text-slate-900">{t('items')}</p>
       </div>
@@ -40,17 +40,17 @@ export default function ItemsSection({ items, onAddLine, onUpdateItem, onRemoveI
           <thead>
             <tr className="border-y border-slate-100 bg-slate-50/60">
               <th className="px-4 py-2.5 text-start text-xs font-medium text-slate-400 w-full">{t('description')}</th>
-              <th className="px-4 py-2.5 text-right text-xs font-medium text-slate-400 w-20">{t('qty')}</th>
-              <th className="px-4 py-2.5 text-right text-xs font-medium text-slate-400 w-28">{t('rate')}</th>
-              <th className="px-4 py-2.5 text-right text-xs font-medium text-slate-400 w-28">{t('amount')}</th>
+              <th className="px-4 py-2.5 text-end text-xs font-medium text-slate-400 w-20">{t('qty')}</th>
+              <th className="px-4 py-2.5 text-end text-xs font-medium text-slate-400 w-28">{t('rate')}</th>
+              <th className="px-4 py-2.5 text-end text-xs font-medium text-slate-400 w-28">{t('amount')}</th>
               <th className="w-10" />
             </tr>
           </thead>
           <tbody>
-            {items.map((item, i) => (
+            {items.map((item) => (
               <tr
                 key={item.id}
-                className={`group border-b border-slate-50 last:border-b-0 hover:bg-slate-50/50 transition-colors ${i % 2 === 0 ? '' : ''}`}
+                className={`group border-b border-slate-50 last:border-b-0 hover:bg-slate-50/50 transition-colors`}
               >
                 <td className="px-2 py-1">
                   <input
@@ -78,7 +78,7 @@ export default function ItemsSection({ items, onAddLine, onUpdateItem, onRemoveI
                     onChange={(e) => onUpdateItem(item.id, { price: Number(e.target.value) })}
                   />
                 </td>
-                <td className="px-4 py-1 text-right tabular-nums text-slate-700 text-sm font-medium">
+                <td className="px-4 py-1 text-end tabular-nums text-slate-700 text-sm font-medium">
                   {(item.quantity * item.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
                 <td className="px-2 py-1">
@@ -114,4 +114,4 @@ export default function ItemsSection({ items, onAddLine, onUpdateItem, onRemoveI
       </div>
     </div>
   );
-}
+});

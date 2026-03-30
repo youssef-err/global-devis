@@ -40,7 +40,7 @@
     "faq1Q": "Est-ce gratuit ?",
     "faq1A": "Oui. Vous pouvez créer et télécharger des factures sans abonnement.",
     "faq2Q": "Ai-je besoin d'un compte ?",
-    "faq2A": "Non. Un compte n'est nécessaire que si vous souhaitez synchroniser vos données avec Supabase.",
+    "faq2A": "Bug. Un compte n'est nécessaire que si vous souhaitez synchroniser vos données avec Supabase.",
     "faq3Q": "Mes données sont-elles en sécurité ?",
     "faq3A": "Vos brouillons restent dans votre navigateur par défaut, ce qui rend le flux principal plus privé.",
     "faq4Q": "Est-ce que cela fonctionne sur mobile ?",
@@ -70,7 +70,13 @@
     "pricingStarterDesc": "Parfait pour la facturation en solo et les exports PDF rapides dans le navigateur.",
     "pricingProTitle": "Pro",
     "pricingProPrice": "12 $/mois",
-    "pricingProDesc": "Idéal pour les professionnels qui veulent la synchronisation, l'historique sauvegardé et un flux de facturation plus avancé."
+    "pricingProDesc": "Idéal pour les professionnels qui veulent la synchronisation, l'historique sauvegardé et un flux de facturation plus avancé.",
+    "continueBelow": "Continuer ci-dessous",
+    "toolsForFreelancers": "Outils pour indépendants",
+    "popularThisWeek": "Populaire cette semaine",
+    "getStarted": "Commencer",
+    "popularBadge": "Le plus populaire",
+    "readMore": "Lire la suite"
   },
   "Form": {
     "companyInfo": "Informations sur l'entreprise",
@@ -163,9 +169,82 @@
     "clientInfoHelper": "Ajoutez votre client",
     "step1": "Votre entreprise",
     "step2": "Votre client",
-    "step3": "Aperçu et export"
+    "step3": "Aperçu et export",
+    "credibilityLine": "Approuvé par les freelances du monde entier",
+    "trustMessage": "100% gratuit. Pas d'inscription requise. Vos données restent sur votre appareil.",
+    "templateClassic": "Classique",
+    "templateModern": "Moderne",
+    "templateMinimal": "Minimal"
+  },
+  "Footer": {
+    "brand": "Global Devis",
+    "tagline": "Professional invoices, right from your browser.",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact",
+    "contactEmail": "support@globaldevis.app",
+    "secureBadge": "Secure & private by default",
+    "product": "Product",
+    "blog": "Blog",
+    "pricing": "Pricing",
+    "legal": "Legal",
+    "allRightsReserved": "All rights reserved.",
+    "madeForFreelancers": "Made for freelancers worldwide"
+  },
+  "About": {
+    "metaTitle": "About | Global Devis",
+    "metaDescription": "Learn what Global Devis is, why it’s free, and how we protect your privacy.",
+    "title": "About Global Devis",
+    "subtitle": "A calm, professional invoice workspace.",
+    "whatTitle": "What this tool is",
+    "whatBody": "Global Devis helps you create client-ready invoices with clean layout, accurate totals, and export-ready output.",
+    "freeTitle": "Why it’s free",
+    "freeBody": "The core invoice workflow is free so anyone can generate professional documents without friction.",
+    "privacyTitle": "Privacy by default",
+    "privacyBody": "Your draft invoice data stays on your device by default. You’re in control of what you export and share.",
+    "trustLine": "100% free. No signup required. Your data stays on your device."
+  },
+  "InvoiceDoc": {
+    "title": "Facture",
+    "noSubject": "Sains objet",
+    "client": "Client",
+    "issueDate": "Date d'émission",
+    "dueDate": "Échéance",
+    "table": {
+      "description": "Description",
+      "qty": "Qté",
+      "price": "Prix",
+      "amount": "Montant"
+    },
+    "totals": {
+      "subtotal": "Sous-total",
+      "tax": "Taxe",
+      "total": "Total"
+    }
   },
   "Invoice": {
+    "invoiceNumber": "Numéro de facture",
+    "date": "Date",
+    "dueDate": "Échéance",
+    "totalTTC": "Total TTC",
+    "subtotalHT": "Sous-total HT",
+    "tva": "TVA",
+    "reduction": "Réduction",
+    "fraisDePort": "Frais de port",
+    "amountInWords": "Total en lettres",
+    "totalAmount": "Montant Total",
+    "currencyDH": "MAD",
+    "currencyDirham": "dirhams",
+    "currencySymbol": "MAD",
+    "invoiceTitle": "FACTURE",
+    "billTo": "Facturer à",
+    "sousTotalHT": "Sous-total (HT) :",
+    "tvaLabel": "TVA ({rate}%) :",
+    "reductionLabel": "Réduction :",
+    "fraisDePortLabel": "Frais de port :",
+    "totalTTCLabel": "TOTAL TTC",
+    "arreteA": "Arrêtée à :",
     "logo": "Logo de l'entreprise",
     "upload_logo": "Télécharger le logo",
     "purpose": "Objectif de la facture",
@@ -173,27 +252,14 @@
     "signature": "Signature",
     "previewTitle": "Aperçu de la facture",
     "print": "Imprimer",
-    "share": "Partager",
     "edit": "Modifier",
     "downloadPdf": "Télécharger PDF",
     "linkCopied": "Lien copié dans le presse-papiers !",
-    "totalTTC": "Total TTC",
-    "subtotalHT": "Sous-total HT",
-    "tva": "TVA",
-    "reduction": "Réduction",
-    "fraisDePort": "Frais de port",
-    "amountInWords": "Arrêtée la présente facture à",
-    "totalAmount": "Montant total",
-    "currencyDH": "DH",
-    "currencyDirham": "dirhams",
-    "invoiceTitle": "FACTURE",
-    "billTo": "Facturer à",
-    "sousTotalHT": "Sous-total (HT):",
-    "tvaLabel": "TVA ({rate}%):",
-    "reductionLabel": "Réduction:",
-    "fraisDePortLabel": "Frais de port:",
-    "totalTTCLabel": "TOTAL TTC",
-    "arreteA": "Arrêtée à:"
+    "shareLabel": "Partager",
+    "share": {
+      "title": "Facture {invoiceNumber} de Global Devis",
+      "text": "Consultez cette facture : {invoiceNumber}"
+    }
   },
   "TopBar": {
     "brand": "Global Devis",
@@ -249,9 +315,7 @@
     "noMatches": "Aucune facture ne correspond aux filtres actuels.",
     "unnamedClient": "Client sans nom",
     "duplicate": "Dupliquer",
-    "delete": "Supprimer",
-    "credibilityLine": "Approuvé par les freelances du monde entier",
-    "trustMessage": "100% gratuit. Pas d'inscription requise. Vos données restent sur votre appareil."
+    "delete": "Supprimer"
   },
   "Legal": {
     "terms": {

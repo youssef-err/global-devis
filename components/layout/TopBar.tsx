@@ -114,7 +114,7 @@ export default function TopBar({
           <button
             type="button"
             onClick={onReset}
-            className="rounded-lg px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors"
+            className="rounded-lg px-3 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             {t('reset')}
           </button>
@@ -122,7 +122,7 @@ export default function TopBar({
           <button
             type="button"
             onClick={onDuplicate}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-800 hover:bg-slate-50 active:scale-[0.98] transition-all"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-800 hover:bg-slate-50 active:scale-[0.98] transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             {t('duplicate')}
           </button>
@@ -130,7 +130,7 @@ export default function TopBar({
           <button
             type="button"
             onClick={onSave}
-            className="rounded-lg bg-black px-4 py-1.5 text-sm font-medium text-white hover:bg-black/90 active:scale-[0.98] transition-all"
+            className="rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-800 active:scale-[0.98] transition-all focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2"
           >
             {t('save')}
           </button>

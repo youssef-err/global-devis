@@ -1,30 +1,6 @@
 import { getRequestConfig } from 'next-intl/server';
 import { routing } from './routing';
 
-import ar from '../messages/ar.json';
-import en from '../messages/en.json';
-import fr from '../messages/fr.json';
-import es from '../messages/es.json';
-import de from '../messages/de.json';
-import pt from '../messages/pt.json';
-import nl from '../messages/nl.json';
-import it from '../messages/it.json';
-import ru from '../messages/ru.json';
-import tr from '../messages/tr.json';
-
-const messagesByLocale = {
-  ar,
-  en,
-  fr,
-  es,
-  de,
-  pt,
-  nl,
-  it,
-  ru,
-  tr
-} as const;
-
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -52,11 +28,17 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const locale = (routing.locales.includes(requestedLocale as (typeof routing.locales)[number])
     ? requestedLocale
     : routing.defaultLocale) as (typeof routing.locales)[number];
-  const localeMessages = messagesByLocale[locale] as Record<string, unknown>;
+
+  // Dynamic import: only load the requested locale + English fallback (~25KB instead of ~120KB)
+  const en = (await import('../messages/en.json')).default;
+  const localeMessages = locale === 'en'
+    ? en
+    : (await import(`../messages/${locale}.json`)).default;
+
   const messages =
     locale === 'en'
       ? en
-      : mergeMessages(en as Record<string, unknown>, localeMessages);
+      : mergeMessages(en as Record<string, unknown>, localeMessages as Record<string, unknown>);
 
   return {
     locale,

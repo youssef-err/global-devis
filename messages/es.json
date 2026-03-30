@@ -58,7 +58,25 @@
     "pricingStarterDesc": "Perfecto para facturación individual y exportaciones PDF rápidas.",
     "pricingProTitle": "Pro",
     "pricingProPrice": "$12/mes",
-    "pricingProDesc": "Ideal para profesionales que quieren sincronización e historial guardado."
+    "pricingProDesc": "Ideal para profesionales que quieren sincronización e historial guardado.",
+    "article1Title": "How to make an invoice",
+    "article1Excerpt": "Learn the core sections every professional invoice should include.",
+    "article2Title": "Best invoicing practices",
+    "article2Excerpt": "Small changes that help you get paid faster and look more professional.",
+    "article3Title": "Managing cash flow",
+    "article3Excerpt": "Tips for keeping project income predictable as a freelancer or small business.",
+    "feature1Title": "Live totals",
+    "feature1Desc": "Subtotal, discount, tax, shipping, and grand total update instantly as you type.",
+    "feature2Title": "Localized experience",
+    "feature2Desc": "Designed for multilingual teams with high-quality Arabic and English invoice composition.",
+    "feature3Title": "Paper preview",
+    "feature3Desc": "Review an aligned, client-ready invoice before exporting a clean PDF.",
+    "continueBelow": "Continue below",
+    "toolsForFreelancers": "Tools for freelancers",
+    "popularThisWeek": "Popular this week",
+    "getStarted": "Get Started",
+    "popularBadge": "Most Popular",
+    "readMore": "Read more"
   },
   "Form": {
     "companyInfo": "Información de la empresa",
@@ -145,7 +163,18 @@
     "signatureClickUpload": "Clic para subir",
     "signatureOrDrag": "o arrastre su imagen",
     "signaturePreview": "Vista previa:",
-    "signatureRemove": "Eliminar firma"
+    "signatureRemove": "Eliminar firma",
+    "clientAddress": "Client address",
+    "date": "Date",
+    "dueDate": "Due date",
+    "companyInfoHelper": "Fill your company info",
+    "clientInfoHelper": "Add your client",
+    "step1": "Your company",
+    "step2": "Your client",
+    "step3": "Preview & export",
+    "templateClassic": "Classic",
+    "templateModern": "Modern",
+    "templateMinimal": "Minimal"
   },
   "Footer": {
     "brand": "Global Devis",
@@ -154,7 +183,14 @@
     "privacy": "Política de privacidad",
     "terms": "Términos de servicio",
     "contact": "Contacto",
-    "contactEmail": "support@globaldevis.app"
+    "contactEmail": "support@globaldevis.app",
+    "secureBadge": "Secure & private by default",
+    "product": "Product",
+    "blog": "Blog",
+    "pricing": "Pricing",
+    "legal": "Legal",
+    "allRightsReserved": "All rights reserved.",
+    "madeForFreelancers": "Made for freelancers worldwide"
   },
   "About": {
     "metaTitle": "Acerca de | Global Devis",
@@ -231,7 +267,6 @@
     "signature": "Firma",
     "previewTitle": "Vista previa de factura",
     "print": "Imprimir",
-    "share": "Compartir",
     "edit": "Editar",
     "downloadPdf": "Descargar PDF",
     "linkCopied": "¡Enlace copiado al portapapeles!",
@@ -251,7 +286,12 @@
     "reductionLabel": "Descuento:",
     "fraisDePortLabel": "Gastos de envío:",
     "totalTTCLabel": "TOTAL TTC",
-    "arreteA": "Detenida en:"
+    "arreteA": "Detenida en:",
+    "shareLabel": "Compartir",
+    "share": {
+      "title": "Invoice {invoiceNumber} from Global Devis",
+      "text": "Check out this invoice: {invoiceNumber}"
+    }
   },
   "History": {
     "title": "Facturas",

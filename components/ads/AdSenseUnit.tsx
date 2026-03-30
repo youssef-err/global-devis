@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCookieConsent } from '@/contexts/cookie-consent-context';
 
 interface AdSenseUnitProps {
@@ -13,6 +13,8 @@ interface AdSenseUnitProps {
   labelText?: string;
 }
 
+const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID || '';
+
 export default function AdSenseUnit({ 
   slot, 
   format = 'auto', 
@@ -24,9 +26,14 @@ export default function AdSenseUnit({
   labelText = 'Recommended'
 }: AdSenseUnitProps) {
   const { consent } = useCookieConsent();
+  const mountedRef = useRef(false);
 
   useEffect(() => {
-    if (consent?.ads) {
+    mountedRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (consent?.ads && ADSENSE_PUB_ID && mountedRef.current) {
       try {
         ((window as unknown as { adsbygoogle: unknown[] }).adsbygoogle = (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle || []).push({});
       } catch (err) {
@@ -96,7 +103,7 @@ export default function AdSenseUnit({
             minHeight: `${getContainerHeight()}px`,
             ...style 
           }}
-          data-ad-client="ca-pub-0000000000000000"
+          data-ad-client={ADSENSE_PUB_ID ? `ca-pub-${ADSENSE_PUB_ID}` : undefined}
           data-ad-slot={slot}
           data-ad-format={format}
           data-full-width-responsive={responsive ? 'true' : 'false'}

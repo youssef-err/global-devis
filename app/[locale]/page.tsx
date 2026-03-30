@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import InvoiceFormLazy from '@/components/InvoiceFormLazy';
 import Navbar from '@/components/Navbar';
+import PremiumSection from '@/components/ui/PremiumSection';
 import { Link } from '@/i18n/routing';
 import SiteFooter from '@/components/layout/SiteFooter';
 import AdSenseUnit from '@/components/ads/AdSenseUnit';
@@ -28,7 +29,7 @@ export default async function HomePage({ params }: HomePageProps) {
   const t = await getTranslations({ locale, namespace: 'HomePage' });
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-slate-50">
       <Navbar />
 
       {/* Main Invoice Form Section */}
@@ -46,15 +47,15 @@ export default async function HomePage({ params }: HomePageProps) {
               <div className="w-full border-t border-slate-200"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-slate-50 px-4 text-xs text-slate-500 font-medium">Continue below</span>
+              <span className="bg-slate-50 px-4 text-xs text-slate-500 font-medium">{t('continueBelow')}</span>
             </div>
           </div>
-          <AdSenseUnit slot="3344556677" format="auto" style={{ minHeight: '110px' }} labelText="Tools for freelancers" />
+          <AdSenseUnit slot="3344556677" format="auto" style={{ minHeight: '110px' }} labelText={t('toolsForFreelancers')} />
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="section-anchor px-4 py-20 sm:px-6">
+      <PremiumSection id="how-it-works" className="section-anchor px-4 py-20 sm:px-6" delay={0.1}>
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -69,10 +70,10 @@ export default async function HomePage({ params }: HomePageProps) {
             {[1, 2, 3].map((step) => (
               <div
                 key={step}
-                className="app-card group"
+                className="app-card group hover:scale-[1.02] transition-transform duration-500"
               >
-                <div className="feature-icon mb-6">
-                  <span className="text-lg font-bold text-indigo-600">0{step}</span>
+                <div className="feature-icon mb-6 bg-slate-900 text-white">
+                  <span className="text-lg font-bold">0{step}</span>
                 </div>
                 <h3 className="text-xl font-semibold text-slate-900">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
@@ -86,31 +87,31 @@ export default async function HomePage({ params }: HomePageProps) {
             ))}
           </div>
         </div>
-      </section>
+      </PremiumSection>
 
       {/* Benefits Banner */}
-      <section className="px-4 py-16 sm:px-6">
+      <PremiumSection className="px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-5xl">
-          <div className="app-card text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <div className="app-card text-center bg-slate-900 text-white border-slate-800 shadow-2xl shadow-indigo-500/10">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               {t('benefitsTitle')}
             </h2>
-            <p className="mt-5 max-w-3xl mx-auto text-base leading-relaxed text-slate-600">
+            <p className="mt-5 max-w-3xl mx-auto text-base leading-relaxed text-slate-400">
               {t('benefitsDesc')}
             </p>
           </div>
         </div>
-      </section>
+      </PremiumSection>
 
       {/* Ad Section - After Benefits */}
       <section className="px-4 sm:px-6">
         <div className="mx-auto max-w-4xl">
-          <AdSenseUnit slot="8899001122" format="auto" style={{ minHeight: '110px' }} labelText="Popular this week" />
+          <AdSenseUnit slot="8899001122" format="auto" style={{ minHeight: '110px' }} labelText={t('popularThisWeek')} />
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="section-anchor px-4 py-20 sm:px-6">
+      <PremiumSection id="pricing" className="section-anchor px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -123,7 +124,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
           <div className="grid gap-8 md:grid-cols-2">
             {/* Starter Plan */}
-            <div className="app-card">
+            <div className="app-card hover:shadow-xl transition-shadow duration-500">
               <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
                 {t('pricingStarterTitle')}
               </p>
@@ -134,14 +135,14 @@ export default async function HomePage({ params }: HomePageProps) {
                 {t('pricingStarterDesc')}
               </p>
               <Link href={`/${locale}`} className="mt-8 app-btn app-btn-secondary w-full">
-                Get Started
+                {t('getStarted')}
               </Link>
             </div>
 
             {/* Pro Plan */}
-            <div className="relative app-card bg-slate-900 border-slate-700">
-              <div className="absolute -top-3 right-6 px-3 py-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-xs font-semibold text-white rounded-full">
-                Popular
+            <div className="relative app-card bg-slate-900 border-slate-700 shadow-2xl shadow-indigo-500/20 hover:scale-[1.01] transition-transform duration-500">
+              <div className="absolute -top-3 end-6 px-3 py-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-xs font-semibold text-white rounded-full shadow-lg">
+                {t('popularBadge')}
               </div>
               <p className="text-sm font-semibold uppercase tracking-widest text-indigo-400">
                 {t('pricingProTitle')}
@@ -152,28 +153,30 @@ export default async function HomePage({ params }: HomePageProps) {
               <p className="mt-4 text-slate-400">
                 {t('pricingProDesc')}
               </p>
-              <Link href={`/${locale}`} className="mt-8 app-btn app-btn-primary w-full">
-                Get Started
+              <Link href={`/${locale}`} className="mt-8 app-btn app-btn-primary w-full shadow-lg shadow-indigo-500/40">
+                {t('getStarted')}
               </Link>
             </div>
           </div>
         </div>
-      </section>
+      </PremiumSection>
 
       {/* FAQ Section */}
-      <section id="faq" className="section-anchor px-4 py-20 sm:px-6">
+      <PremiumSection id="faq" className="section-anchor px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-3xl">
-          <h2 className="mb-12 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            {t('faqTitle')}
-          </h2>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              {t('faqTitle')}
+            </h2>
+          </div>
 
           <div className="space-y-4">
             {[1, 2, 3, 4, 5].map((faq) => (
               <details
                 key={faq}
-                className="app-card group cursor-pointer"
+                className="app-card group cursor-pointer hover:border-slate-300 transition-colors"
               >
-                <summary className="flex items-center justify-between gap-4 text-lg font-semibold text-slate-900 list-none">
+                <summary className="flex items-center justify-between gap-4 text-lg font-semibold text-slate-900 list-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-lg">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   <span>{t(`faq${faq}Q` as any)}</span>
                   <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 group-open:bg-indigo-100 group-open:text-indigo-600 transition-colors">
@@ -189,10 +192,10 @@ export default async function HomePage({ params }: HomePageProps) {
             ))}
           </div>
         </div>
-      </section>
+      </PremiumSection>
 
       {/* Blog Section */}
-      <section id="blog" className="section-anchor px-4 py-20 sm:px-6">
+      <PremiumSection id="blog" className="section-anchor px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 flex items-end justify-between gap-6">
             <div>
@@ -202,7 +205,7 @@ export default async function HomePage({ params }: HomePageProps) {
             </div>
             <Link href="/blog" locale={locale} className="hidden sm:inline-flex items-center gap-2 font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">
               {t('viewAllBlogPosts')}
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 rtl:scale-x-[-1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
@@ -216,7 +219,7 @@ export default async function HomePage({ params }: HomePageProps) {
             ].map((article) => (
               <article
                 key={article.slug}
-                className="app-card group cursor-pointer"
+                className="app-card group cursor-pointer hover:shadow-xl transition-all duration-500"
               >
                 <h3 className="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
                   <Link href={`/blog/${article.slug}`} locale={locale}>
@@ -227,8 +230,8 @@ export default async function HomePage({ params }: HomePageProps) {
                   {article.excerpt}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
-                  <span>Read more</span>
-                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span>{t('readMore')}</span>
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:scale-x-[-1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </div>
@@ -242,7 +245,7 @@ export default async function HomePage({ params }: HomePageProps) {
             </Link>
           </div>
         </div>
-      </section>
+      </PremiumSection>
 
       <SiteFooter />
     </main>

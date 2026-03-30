@@ -144,9 +144,6 @@ export default function InvoiceForm() {
   const isArabic = locale === 'ar';
   
   const [mounted, setMounted] = useState(false);
-  const [, setIsExporting] = useState(false);
-  const [, setExportSuccess] = useState(false);
-
   const [details, setDetails] = useState<InvoiceDetails>({
     companyName: '', companyEmail: '', companyAddress: '', companyLogo: '',
     clientName: '', clientEmail: '', clientAddress: '',
@@ -221,7 +218,6 @@ export default function InvoiceForm() {
     const jsPDF = (await import('jspdf')).default;
     const el = document.getElementById('invoice-preview');
     if (!el) return;
-    setIsExporting(true);
     const canvas = await html2canvas(el, { scale: 3, useCORS: true, backgroundColor: '#ffffff' });
     const pdf = new jsPDF('p', 'mm', 'a4');
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
@@ -231,9 +227,6 @@ export default function InvoiceForm() {
       currency: details.currency,
       total: Number(totalTTC.toFixed(2))
     });
-    setIsExporting(false);
-    setExportSuccess(true);
-    setTimeout(() => setExportSuccess(false), 2000);
   };
 
   if (!mounted) return null;
@@ -507,16 +500,20 @@ export default function InvoiceForm() {
 
           {/* 📄 Preview Column (Sticky) */}
           <div className="lg:sticky lg:top-10">
-            <SmartActionsToolbar
-              invoiceNumber={details.number}
-              onPdfDownload={downloadPDF}
-            />
+            {/* Unified toolbar + invoice container */}
+            <div className="w-full max-w-[21cm] mx-auto hide-on-print">
+              <SmartActionsToolbar
+                invoiceNumber={details.number}
+                onPdfDownload={downloadPDF}
+                variant="inline"
+              />
+            </div>
 
-            {/* Paper frame */}
-            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+            {/* Paper frame - seamlessly connected to toolbar */}
+            <div className="rounded-b-xl rounded-t-none border border-slate-200 border-t-0 bg-white shadow-sm">
               <div
                 id="invoice-preview"
-                className="mx-auto w-full max-w-[21cm] overflow-hidden rounded-md bg-white shadow-[0_24px_80px_rgba(15,23,42,0.10)] ring-1 ring-slate-200"
+                className="mx-auto w-full overflow-hidden bg-white shadow-[0_24px_80px_rgba(15,23,42,0.10)]"
                 style={{ pageBreakInside: 'avoid' }}
               >
                 {/* Document */}

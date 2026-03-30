@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { ChevronDown, Globe, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
@@ -59,7 +60,7 @@ export default function Navbar() {
             <a
               key={item.href}
               href={item.href}
-              className="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-950"
+              className="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               {item.label}
             </a>
@@ -79,25 +80,33 @@ export default function Navbar() {
               <ChevronDown className="h-4 w-4 text-slate-400" />
             </button>
 
-            {languageOpen ? (
-              <div className="absolute inset-inline-end-0 top-[calc(100%+0.75rem)] w-44 rounded-2xl border border-white/80 bg-white/95 p-2 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur-md">
-                {supportedLocales.map((entry) => (
-                  <button
-                    key={entry}
-                    type="button"
-                    onClick={() => switchLocale(entry)}
-                    className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm transition-colors ${
-                      locale === entry
-                        ? 'bg-indigo-50 text-indigo-700'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
-                    }`}
-                  >
-                    <span>{t(`localeName.${entry}`)}</span>
-                    <span className="text-xs font-semibold uppercase">{entry}</span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
+            <AnimatePresence>
+              {languageOpen && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="absolute inset-inline-end-0 top-[calc(100%+0.75rem)] w-44 rounded-2xl border border-white/80 bg-white/95 p-2 shadow-[0_18px_55px_rgba(15,23,42,0.12)] backdrop-blur-md"
+                >
+                  {supportedLocales.map((entry) => (
+                    <button
+                      key={entry}
+                      type="button"
+                      onClick={() => switchLocale(entry)}
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm transition-colors ${
+                        locale === entry
+                          ? 'bg-indigo-50 text-indigo-700'
+                          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+                      }`}
+                    >
+                      <span>{t(`localeName.${entry}`)}</span>
+                      <span className="text-xs font-semibold uppercase">{entry}</span>
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -111,39 +120,46 @@ export default function Navbar() {
         </button>
       </div>
 
-      {mobileOpen ? (
-        <div className="mx-auto mt-3 max-w-5xl rounded-[2rem] border border-white/80 bg-white/92 p-4 shadow-[0_20px_60px_rgba(15,23,42,0.10)] backdrop-blur-md lg:hidden">
-          <nav className="flex flex-col gap-2 font-arabic">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mx-auto mt-3 max-w-5xl rounded-[2rem] border border-white/80 bg-white/92 p-4 shadow-[0_20px_60px_rgba(15,23,42,0.10)] backdrop-blur-md lg:hidden"
+          >
+            <nav className="flex flex-col gap-2 font-arabic">
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
 
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            {supportedLocales.map((entry) => (
-              <button
-                key={entry}
-                type="button"
-                onClick={() => switchLocale(entry)}
-                className={`rounded-2xl px-3 py-3 text-sm font-medium uppercase transition-colors ${
-                  locale === entry
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
-              >
-                {entry}
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              {supportedLocales.map((entry) => (
+                <button
+                  key={entry}
+                  type="button"
+                  onClick={() => switchLocale(entry)}
+                  className={`rounded-2xl px-3 py-3 text-sm font-medium uppercase transition-colors ${
+                    locale === entry
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  {entry}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

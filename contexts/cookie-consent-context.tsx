@@ -2,7 +2,7 @@
 
 /* eslint-disable react-hooks/set-state-in-effect */
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 type ConsentSettings = {
   analytics: boolean;
@@ -46,24 +46,24 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
     } catch {}
   };
 
-  const acceptAll = () => saveToStorage({ analytics: true, ads: true });
-  const rejectAll = () => saveToStorage({ analytics: false, ads: false });
-  const openSettings = () => setIsSettingsOpen(true);
-  const savePreferences = (settings: ConsentSettings) => saveToStorage(settings);
+  const acceptAll = useCallback(() => saveToStorage({ analytics: true, ads: true }), []);
+  const rejectAll = useCallback(() => saveToStorage({ analytics: false, ads: false }), []);
+  const openSettings = useCallback(() => setIsSettingsOpen(true), []);
+  const savePreferences = useCallback((settings: ConsentSettings) => saveToStorage(settings), []);
+
+  const value = useMemo(() => ({
+    consent,
+    hasEngaged,
+    acceptAll,
+    rejectAll,
+    openSettings,
+    isSettingsOpen,
+    savePreferences,
+  }), [consent, hasEngaged, acceptAll, rejectAll, openSettings, isSettingsOpen, savePreferences]);
 
   // Render context safely even on SSR, UI reacts to `consent === null` or `isMounted` natively inside children.
   return (
-    <CookieConsentContext.Provider
-      value={{
-        consent,
-        hasEngaged,
-        acceptAll,
-        rejectAll,
-        openSettings,
-        isSettingsOpen,
-        savePreferences,
-      }}
-    >
+    <CookieConsentContext.Provider value={value}>
       {children}
     </CookieConsentContext.Provider>
   );

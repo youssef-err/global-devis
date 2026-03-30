@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { InvoiceDetails, InvoiceTotals } from '@/types/invoice';
 import { useTranslations } from 'next-intl';
 
@@ -9,13 +10,13 @@ interface Props {
   onUpdateDetails: (v: Partial<InvoiceDetails>) => void;
 }
 
-export default function PricingSection({ details, totals, onUpdateDetails }: Props) {
+export default memo(function PricingSection({ details, totals, onUpdateDetails }: Props) {
   const t = useTranslations('Form');
 
   const fmt = (n: number) => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
-    <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
       <p className="mb-4 text-sm font-medium text-slate-900">{t('pricing')}</p>
 
       {/* Tax rate input */}
@@ -51,4 +52,4 @@ export default function PricingSection({ details, totals, onUpdateDetails }: Pro
       </div>
     </div>
   );
-}
+});

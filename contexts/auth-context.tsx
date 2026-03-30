@@ -59,14 +59,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      if (cancelled) return;
       setSession(nextSession);
       setUser(nextSession?.user ?? null);
       setIsLoading(false);
     });
 
+    // Safety timeout: don't block the user forever if Supabase is slow/down
+    const timeout = setTimeout(() => {
+      if (!cancelled) {
+        setIsLoading(false);
+      }
+    }, 2500);
+
     return () => {
       cancelled = true;
       subscription.unsubscribe();
+      clearTimeout(timeout);
     };
   }, [supabase]);
 
@@ -123,10 +132,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [user, session, isLoading, supabase, signIn, signUp, signOut]
   );
 
-  if (supabase && isLoading) {
+  if (isLoading && supabase) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 text-sm text-slate-500">
-        Loading session...
+      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-900 overflow-hidden">
+        <div className="relative">
+          {/* Pulse animation */}
+          <div className="absolute inset-0 scale-[2.5] rounded-full bg-indigo-500/20 blur-2xl animate-pulse" />
+          
+          <div className="relative flex h-24 w-24 items-center justify-center rounded-[2rem] bg-slate-950 text-3xl font-black text-white shadow-2xl ring-1 ring-white/10 animate-bounce">
+            GD
+          </div>
+        </div>
+
+        <div className="mt-12 flex flex-col items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-bounce [animation-delay:-0.3s]" />
+            <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-bounce [animation-delay:-0.15s]" />
+            <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-bounce" />
+          </div>
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 animate-pulse">
+            Configuring Premium Experience
+          </p>
+        </div>
       </div>
     );
   }

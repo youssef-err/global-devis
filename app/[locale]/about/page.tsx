@@ -75,30 +75,30 @@ export default async function AboutPage({ params }: AboutPageProps) {
           {/* Trust Signals */}
           <div className="mt-12 p-6 rounded-xl bg-slate-900 text-white">
             <div className="text-center mb-6">
-              <p className="text-sm text-slate-400 mb-2">Trusted by</p>
-              <p className="text-2xl font-bold">Freelancers Worldwide</p>
+              <p className="text-sm text-slate-400 mb-2">{t('trustedBy')}</p>
+              <p className="text-2xl font-bold">{t('freelancersWorldwide')}</p>
             </div>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="p-4 rounded-lg bg-white/10">
                 <p className="text-2xl font-bold text-white">100%</p>
-                <p className="text-xs text-slate-400 mt-1">Free to use</p>
+                <p className="text-xs text-slate-400 mt-1">{t('freeToUse')}</p>
               </div>
               <div className="p-4 rounded-lg bg-white/10">
                 <p className="text-2xl font-bold text-white">0</p>
-                <p className="text-xs text-slate-400 mt-1">Signup required</p>
+                <p className="text-xs text-slate-400 mt-1">{t('signupRequired')}</p>
               </div>
               <div className="p-4 rounded-lg bg-white/10">
                 <p className="text-2xl font-bold text-white">100%</p>
-                <p className="text-xs text-slate-400 mt-1">Browser-based</p>
+                <p className="text-xs text-slate-400 mt-1">{t('browserBased')}</p>
               </div>
             </div>
           </div>
 
           {/* CTA */}
           <div className="mt-8 text-center">
-            <Link href={`/${locale}`} className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors">
-              Create your first invoice
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Link href={`/${locale}`} className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2">
+              {t('createFirstInvoice')}
+              <svg className="w-4 h-4 rtl:scale-x-[-1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>

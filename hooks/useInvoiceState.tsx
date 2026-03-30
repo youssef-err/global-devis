@@ -94,8 +94,14 @@ export function useInvoiceState(): UseInvoiceStateResult {
     };
   }, [data.items, data.details.taxRate]);
 
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
-    storage.save(DRAFT_STORAGE_KEY, data);
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    saveTimeoutRef.current = setTimeout(() => {
+      storage.save(DRAFT_STORAGE_KEY, data);
+    }, 500);
+    return () => { if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current); };
   }, [data]);
 
   useEffect(() => {

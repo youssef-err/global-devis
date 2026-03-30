@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
 
 export type ToastType = 'success' | 'error' | 'info' | 'loading';
 
@@ -38,8 +38,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     [dismiss]
   );
 
+  const value = useMemo(() => ({ toasts, toast, dismiss }), [toasts, toast, dismiss]);
+
   return (
-    <ToastContext.Provider value={{ toasts, toast, dismiss }}>
+    <ToastContext.Provider value={value}>
       {children}
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </ToastContext.Provider>
@@ -111,14 +113,14 @@ function ToastContainer({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id
   return (
     <div
       aria-live="polite"
-      className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2 items-end"
+      className="fixed bottom-6 end-6 z-[9999] flex flex-col gap-2 items-end"
     >
       {toasts.map((t) => {
         const { container, icon } = styles[t.type];
         return (
           <div
             key={t.id}
-            className={`toast-enter flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium shadow-lg ${container}`}
+            className={`animate-toast-in flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium shadow-lg ${container}`}
           >
             {icon}
             <span>{t.message}</span>

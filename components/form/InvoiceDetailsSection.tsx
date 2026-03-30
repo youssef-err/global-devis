@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent } from 'react';
+import { ChangeEvent, memo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { InvoiceDetails } from '@/types/invoice';
 import { TAX_CONFIG } from '@/lib/invoice/taxes';
@@ -10,10 +10,10 @@ interface Props {
   onUpdate: (data: Partial<InvoiceDetails>) => void;
 }
 
-const field = 'w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition-colors hover:border-slate-300 focus:border-slate-400 focus:outline-none';
+const field = 'w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-300 transition-colors hover:border-slate-300 focus:border-slate-400 focus:outline-none focus:ring-0';
 const selectField = `${field} cursor-pointer appearance-none`;
 
-export default function InvoiceDetailsSection({ details, onUpdate }: Props) {
+export default memo(function InvoiceDetailsSection({ details, onUpdate }: Props) {
   const t = useTranslations('Form');
   const locale = useLocale();
 
@@ -35,7 +35,7 @@ export default function InvoiceDetailsSection({ details, onUpdate }: Props) {
   const currencies = [...new Set(Object.values(TAX_CONFIG).map((c) => c.currency))];
 
   return (
-    <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
       <p className="mb-4 text-sm font-medium text-slate-900">{t('invoiceDetails')}</p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div>
@@ -59,12 +59,12 @@ export default function InvoiceDetailsSection({ details, onUpdate }: Props) {
         <div>
           <label className="mb-1 block text-xs text-slate-400">{t('template')}</label>
           <select name="template" value={details.template} onChange={handleSelect} className={selectField}>
-            <option value="classic">Classic</option>
-            <option value="modern">Modern</option>
-            <option value="minimal">Minimal</option>
+            <option value="classic">{t('templateClassic')}</option>
+            <option value="modern">{t('templateModern')}</option>
+            <option value="minimal">{t('templateMinimal')}</option>
           </select>
         </div>
       </div>
     </div>
   );
-}
+});
