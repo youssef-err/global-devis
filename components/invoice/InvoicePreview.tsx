@@ -134,8 +134,9 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
 
           const styleTags = clonedDoc.getElementsByTagName('style');
           for (let i = 0; i < styleTags.length; i++) {
-            if (styleTags[i].textContent?.includes('oklch') || styleTags[i].textContent?.includes('oklab')) {
-              styleTags[i].textContent = styleTags[i].textContent!
+            const text = styleTags[i].textContent ?? '';
+            if (text.includes('oklch') || text.includes('oklab') || text.includes('lab(')) {
+              styleTags[i].textContent = text
                 .replace(/oklch\([^)]+\)/g, '#000000')
                 .replace(/oklab\([^)]+\)/g, '#000000')
                 .replace(/lab\([^)]+\)/g, '#000000');

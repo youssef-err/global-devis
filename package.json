@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node -e \"try{require('fs').rmSync('.next',{recursive:true,force:true})}catch(e){}\"",
     "dev": "next dev",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0 && tsc --noEmit",
@@ -53,6 +54,7 @@
     "eslint-config-next": "^16.2.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "postcss": "^8.5.8",
+    "postcss-lab-function": "^8.0.2",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.0.0",

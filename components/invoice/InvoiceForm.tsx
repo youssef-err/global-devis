@@ -165,7 +165,24 @@ export default function InvoiceForm() {
     const jsPDF = (await import('jspdf')).default;
     const el = document.getElementById('invoice-preview');
     if (!el) return;
-    const canvas = await html2canvas(el, { scale: 3, useCORS: true, backgroundColor: '#ffffff' });
+    const canvas = await html2canvas(el, {
+      scale: 3,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      onclone: (_clonedDoc, clonedEl) => {
+        const root = clonedEl.ownerDocument;
+        const styleTags = root.getElementsByTagName('style');
+        for (let i = 0; i < styleTags.length; i++) {
+          const text = styleTags[i].textContent ?? '';
+          if (text.includes('oklch') || text.includes('oklab') || text.includes('lab(')) {
+            styleTags[i].textContent = text
+              .replace(/oklch\([^)]+\)/g, '#000000')
+              .replace(/oklab\([^)]+\)/g, '#000000')
+              .replace(/lab\([^)]+\)/g, '#000000');
+          }
+        }
+      },
+    });
     const pdf = new jsPDF('p', 'mm', 'a4');
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
     pdf.save(`${details.number}.pdf`);
