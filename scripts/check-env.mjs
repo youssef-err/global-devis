@@ -7,6 +7,7 @@ const REQUIRED = [
 const OPTIONAL = [
   'NEXT_PUBLIC_GA_MEASUREMENT_ID',
   'NEXT_PUBLIC_ADSENSE_PUB_ID',
+  'NEXT_PUBLIC_SENTRY_DSN',
 ];
 
 const missing = REQUIRED.filter((key) => !process.env[key]);

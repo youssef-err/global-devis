@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import InvoiceFormLazy from '@/components/invoice/InvoiceFormLazy';
 import Navbar from '@/components/layout/Navbar';
 import PremiumSection from '@/components/ui/PremiumSection';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import { Link } from '@/i18n/routing';
 import SiteFooter from '@/components/layout/SiteFooter';
 import AdSenseUnit from '@/components/ads/AdSenseUnit';
@@ -35,7 +36,9 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Main Invoice Form Section */}
       <section className="px-4 pb-10 pt-6 sm:px-6 lg:pb-16 lg:pt-10">
         <div className="mx-auto max-w-6xl">
-          <InvoiceFormLazy />
+          <ErrorBoundary>
+            <InvoiceFormLazy />
+          </ErrorBoundary>
         </div>
       </section>
 
