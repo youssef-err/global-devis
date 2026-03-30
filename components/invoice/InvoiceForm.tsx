@@ -15,6 +15,7 @@ import SignatureCanvas from 'react-signature-canvas';
 import { Tajawal } from 'next/font/google';
 import { numberToArabicWords } from '@/lib/numberToArabic';
 import { numberToFrenchWords } from '@/lib/numberToFrench';
+import { createInvoiceNumber } from '@/lib/invoice/constants';
 import SmartActionsToolbar from './SmartActionsToolbar';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
@@ -93,7 +94,7 @@ export default function InvoiceForm() {
   const [details, setDetails] = useState<InvoiceDetails>({
     companyName: '', companyEmail: '', companyAddress: '', companyLogo: '',
     clientName: '', clientEmail: '', clientAddress: '',
-    number: `INV-${Math.floor(1000 + Math.random() * 9000)}`,
+    number: createInvoiceNumber(),
     date: new Date().toISOString().split('T')[0],
     dueDate: '', currency: 'MAD', taxRate: 0, discount: 0, shippingFee: 0, notes: '', invoicePurpose: '',
     companyIce: '', clientIce: '', signatureImage: ''
