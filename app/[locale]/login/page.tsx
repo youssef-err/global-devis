@@ -1,15 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { useAuth } from '@/contexts/auth-context';
+import AuthForm from '@/components/ui/AuthForm';
 
 export default function LoginPage() {
   const router = useRouter();
   const locale = useLocale();
-  const t = useTranslations('Auth');
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,51 +30,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-900">{t('signIn')}</h1>
-        <p className="mt-1 text-sm text-slate-500">{t('signInDesc')}</p>
-
-        <form onSubmit={onSubmit} className="mt-6 space-y-4">
-          <label className="block space-y-1.5">
-            <span className="text-sm text-slate-600">{t('email')}</span>
-            <input
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none transition-colors focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10 hover:border-slate-300"
-            />
-          </label>
-          <label className="block space-y-1.5">
-            <span className="text-sm text-slate-600">{t('password')}</span>
-            <input
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none transition-colors focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10 hover:border-slate-300"
-            />
-          </label>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-xl bg-slate-900 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2"
-          >
-            {loading ? t('signingIn') : t('signInButton')}
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-slate-600">
-          {t('noAccount')}{' '}
-          <Link href={`/${locale}/signup`} className="font-medium text-slate-900 underline">
-            {t('signUpButton')}
-          </Link>
-        </p>
-      </div>
-    </div>
+    <AuthForm
+      mode="login"
+      email={email}
+      password={password}
+      error={error}
+      loading={loading}
+      onEmailChange={setEmail}
+      onPasswordChange={setPassword}
+      onSubmit={onSubmit}
+    />
   );
 }
