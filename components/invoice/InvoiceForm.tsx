@@ -199,7 +199,7 @@ export default function InvoiceForm() {
     "app-input h-10 text-sm focus:ring-2 focus:ring-black/20";
 
   return (
-    <div className={`min-h-screen bg-slate-50 pb-20 ${isArabic ? tajawal.variable : ''} font-arabic animate-fade-up`} dir={isArabic ? 'rtl' : 'ltr'}>
+    <div data-testid="invoice-form" className={`min-h-screen bg-slate-50 pb-20 ${isArabic ? tajawal.variable : ''} font-arabic animate-fade-up`} dir={isArabic ? 'rtl' : 'ltr'}>
       <div className="mx-auto max-w-[1400px] px-6 pt-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_520px] gap-6 items-start">
