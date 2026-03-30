@@ -10,6 +10,13 @@ const OPTIONAL = [
   'NEXT_PUBLIC_SENTRY_DSN',
 ];
 
+// In CI/deployment platforms (GitHub Actions, Vercel, Netlify, etc.)
+// env vars are injected by the platform — skip the .env.local check.
+if (process.env.CI) {
+  console.warn('  ✔ CI environment detected — skipping local env check\n');
+  process.exit(0);
+}
+
 const missing = REQUIRED.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {
