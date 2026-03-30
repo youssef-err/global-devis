@@ -3,6 +3,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { storage } from '@/lib/storage';
 
 type ConsentSettings = {
   analytics: boolean;
@@ -28,9 +29,8 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     try {
-      const stored = window.localStorage.getItem('gdpr_consent');
-      if (stored) {
-        const parsed = JSON.parse(stored);
+      const parsed = storage.load<ConsentSettings>('gdpr_consent');
+      if (parsed) {
         setConsent(parsed);
         setHasEngaged(true);
       }
@@ -39,7 +39,7 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
 
   const saveToStorage = (settings: ConsentSettings) => {
     try {
-      window.localStorage.setItem('gdpr_consent', JSON.stringify(settings));
+      storage.save('gdpr_consent', settings);
       setConsent(settings);
       setHasEngaged(true);
       setIsSettingsOpen(false);
