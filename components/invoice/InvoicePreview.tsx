@@ -53,50 +53,14 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
   const shippingFee = data?.shippingFee ?? 0;
   const totalTTC = subtotal + taxAmount + shippingFee - discount;
 
-  // Currency: Arabic = "درهم مغربي", French/English = "MAD"
-  const getCurrency = (): string => isRtl ? 'درهم مغربي' : 'MAD';
-  const getCurrencySymbol = (): string => isRtl ? 'درهم' : 'MAD';
+  // Currency labels via i18n
+  const getCurrency = (): string => isRtl ? t('currencyDirham') : 'MAD';
+  const getCurrencySymbol = (): string => isRtl ? t('currencyDH') : 'MAD';
 
-  // FIX #3: All labels must use t() or getLabel() - NO hardcoded text
-  const getLabel = (key: string): string => {
-    if (isRtl) {
-      const arLabels: Record<string, string> = {
-        subtotalHT: 'المجموع دون الضريبة',
-        tva: 'ضريبة القيمة المضافة',
-        reduction: 'الخصم',
-        fraisDePort: 'مصاريف الشحن',
-        totalAmount: 'الإجمالي شامل الضريبة',
-        notes: 'ملاحظات',
-        signature: 'التوقيع والختم',
-        date: 'التاريخ',
-        rate: 'الثمن',
-        qty: 'الكمية',
-        description: 'البيان',
-        previewTitle: 'فاتورة',
-        billTo: 'فاتورة إلى',
-        purpose: 'الموضوع',
-        amountInWords: 'المبلغ بالحروف',
-        subtotalLabel: 'المجموع',
-        taxLabel: 'الضريبة',
-        totalLabel: 'الإجمالي',
-      };
-      return arLabels[key] || t(key);
-    }
-    return t(key);
-  };
+  // All labels via t() — ar.json/Invoice namespace provides Arabic translations
+  const getLabel = (key: string): string => t(key);
 
-  const getFormLabel = (key: string): string => {
-    if (isRtl) {
-      const arFormLabels: Record<string, string> = {
-        description: 'البيان',
-        qty: 'الكمية',
-        rate: 'الثمن',
-        date: 'التاريخ',
-      };
-      return arFormLabels[key] || tForm(key);
-    }
-    return tForm(key);
-  };
+  const getFormLabel = (key: string): string => tForm(key);
 
   // Amount in words - 100% Arabic when RTL, French when LTR
   const amountInWords = isRtl 
