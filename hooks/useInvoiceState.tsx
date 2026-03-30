@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { pdf } from '@react-pdf/renderer';
-import InvoicePdfDocument, { registerInvoiceFonts } from '@/components/PDFDocument';
+import InvoicePdfDocument, { registerInvoiceFonts } from '@/components/invoice/PDFDocument';
 import {
   ClientInfo,
   CompanyInfo,

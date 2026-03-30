@@ -2,9 +2,9 @@
 
 import { Document, Font } from '@react-pdf/renderer';
 import type { InvoiceData, InvoiceTotals } from '@/types/invoice';
-import ClassicTemplate from './templates/ClassicTemplate';
-import ModernTemplate from './templates/ModernTemplate';
-import MinimalTemplate from './templates/MinimalTemplate';
+import ClassicTemplate from '../templates/ClassicTemplate';
+import ModernTemplate from '../templates/ModernTemplate';
+import MinimalTemplate from '../templates/MinimalTemplate';
 
 const FONT_FAMILY_AR = 'Tajawal';
 const FONT_FAMILY_EN = 'Poppins';
