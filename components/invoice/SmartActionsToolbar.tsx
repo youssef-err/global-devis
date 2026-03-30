@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
-import { Printer, Share2, Download, Copy, Check } from 'lucide-react';
+import { Printer, Share2, Download, Check } from 'lucide-react';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 

@@ -69,10 +69,6 @@ export default function InvoicePreview({ data }: InvoicePreviewProps) {
 
   // French number to words helper
   function numberToFrenchWords(amount: number): string {
-    const units = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf'];
-    const teens = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'];
-    const tens = ['', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante-dix', 'quatre-vingts', 'quatre-vingt-dix'];
-    
     const integerPart = Math.floor(amount);
     const decimalPart = Math.round((amount - integerPart) * 100);
     

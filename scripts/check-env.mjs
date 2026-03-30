@@ -26,4 +26,4 @@ if (missingOptional.length > 0) {
   console.warn('');
 }
 
-console.log('  ✔ Environment variables OK\n');
+console.warn('  ✔ Environment variables OK\n');
