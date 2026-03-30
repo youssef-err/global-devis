@@ -9,7 +9,10 @@
     "build": "node scripts/check-env.mjs && next build",
     "start": "next start",
     "ci": "node scripts/check-env.mjs && next build",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",
@@ -34,12 +37,14 @@
     "@types/node": "^20.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitest/coverage-v8": "^4.1.2",
     "eslint": "^9.37.0",
     "eslint-config-next": "^16.2.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.2"
   }
 }
