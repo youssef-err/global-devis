@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-const InvoiceForm = dynamic(() => import('@/components/InvoiceForm'), {
+const InvoiceForm = dynamic(() => import('@/components/invoice/InvoiceForm'), {
   ssr: false,
   loading: () => (
     <div className="flex justify-center items-center h-96 w-full">

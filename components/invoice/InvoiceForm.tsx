@@ -14,7 +14,7 @@ import {
 import SignatureCanvas from 'react-signature-canvas';
 import { Tajawal } from 'next/font/google';
 import { numberToArabicWords } from '@/lib/numberToArabic';
-import SmartActionsToolbar from './invoice/SmartActionsToolbar';
+import SmartActionsToolbar from './SmartActionsToolbar';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
 const tajawal = Tajawal({
